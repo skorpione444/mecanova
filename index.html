@@ -410,9 +410,9 @@
           const map = new mapboxgl.Map({
             container: 'mapbox-globe',
             style: 'mapbox://styles/skorpione/cmhoxtzey001v01sehm1f9eyr',
-            center: [0, 28],
-            zoom: 1.2,
-            pitch: 24,
+            center: [0, 20], // Moved up to reduce top whitespace
+            zoom: 1.5, // Zoomed in slightly to crop top whitespace
+            pitch: 30, // Increased pitch to show globe higher
             bearing: 0,
             projection: 'globe',
             interactive: false, // Disable interactions for background
@@ -420,12 +420,36 @@
           });
           
           map.on('load', () => {
+            // Darken the background significantly
             map.setFog({
-              color: 'rgba(12, 12, 14, 0.92)',
-              'horizon-blend': 0.12,
-              'high-color': '#2b0010',
-              'space-color': '#1a1b1f',
+              color: 'rgba(0, 0, 0, 0.98)', // Much darker background
+              'horizon-blend': 0.05,
+              'high-color': '#000000', // Pure black
+              'space-color': '#000000', // Pure black
               'star-intensity': 0,
+            });
+            
+            // Remove all label layers
+            const labelLayers = [
+              'country-label',
+              'country-label-lg',
+              'country-label-md',
+              'state-label',
+              'state-label-lg',
+              'settlement-major-label',
+              'settlement-major-label-lg',
+              'settlement-minor-label',
+              'place-city-lg-n',
+              'place-city-md-n',
+              'place-city-sm',
+              'place-town',
+              'place-village',
+            ];
+            
+            labelLayers.forEach((layerId) => {
+              if (map.getLayer(layerId)) {
+                map.setLayoutProperty(layerId, 'visibility', 'none');
+              }
             });
             
             // Disable all map controls and interactions
