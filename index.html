@@ -417,10 +417,10 @@
           const map = new mapboxgl.Map({
             container: 'mapbox-globe',
             style: 'mapbox://styles/skorpione/cmhoxtzey001v01sehm1f9eyr',
-            center: [-99, 23], // Mexico centered (longitude, latitude)
+            center: [-99, 23], // Start centered on Mexico (longitude, latitude)
             zoom: 1.5, // Zoomed in slightly to crop top whitespace
             pitch: 30, // Increased pitch to show globe higher
-            bearing: 0, // Start facing Mexico
+            bearing: 0, // Initial bearing
             projection: 'globe',
             interactive: false, // Disable interactions for background
             attributionControl: false, // Hide attribution for cleaner look
@@ -448,15 +448,42 @@
             map.boxZoom.disable();
             map.keyboard.disable();
             
-            // Continuous rotation animation - rotate left (counter-clockwise)
+            // Continuous rotation animation - rotate around the globe
             // Starting from Mexico, rotating left shows: Mexico → Atlantic → Europe → Asia → Pacific → back to Mexico
-            let rotation = 0;
+            let bearing = 0;
+            const mexicoCenter = [-99, 23]; // Mexico coordinates
+            
             function rotateGlobe() {
-              rotation -= 0.1; // Subtract to rotate counter-clockwise (left)
-              if (rotation <= -360) {
-                rotation = 0;
+              // Rotate bearing counter-clockwise (left)
+              bearing -= 0.1;
+              if (bearing <= -360) {
+                bearing = 0;
               }
-              map.setBearing(rotation);
+              
+              // Calculate new center point to rotate around the globe
+              // This creates a circular path around the globe
+              const radius = 0; // Keep center fixed, rotate bearing instead
+              
+              // Set the bearing to rotate the view around the fixed center
+              map.setBearing(bearing);
+              
+              // To show different continents, we need to rotate the center around the globe
+              // Calculate longitude offset based on bearing
+              const longitudeOffset = (bearing * Math.PI) / 180;
+              const newCenter = [
+                mexicoCenter[0] + (longitudeOffset * 50), // Move longitude as we rotate
+                mexicoCenter[1] // Keep latitude relatively stable
+              ];
+              
+              // Actually, let's use a better approach - rotate center coordinates around the globe
+              const angle = (bearing * Math.PI) / 180;
+              const earthRadius = 180; // Approximate degrees to move around globe
+              const newLon = mexicoCenter[0] + (Math.sin(angle) * 100);
+              const newLat = mexicoCenter[1] + (Math.cos(angle) * 30);
+              
+              map.setCenter([newLon, newLat]);
+              map.setBearing(bearing);
+              
               requestAnimationFrame(rotateGlobe);
             }
             rotateGlobe();
