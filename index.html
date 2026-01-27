@@ -437,15 +437,17 @@
             map.boxZoom.disable();
             map.keyboard.disable();
             
-            // Optional: Add subtle rotation animation
+            // Continuous rotation animation
             let rotation = 0;
             function rotateGlobe() {
               rotation += 0.1;
+              if (rotation >= 360) {
+                rotation = 0;
+              }
               map.setBearing(rotation);
               requestAnimationFrame(rotateGlobe);
             }
-            // Uncomment to enable rotation:
-            // rotateGlobe();
+            rotateGlobe();
           });
           
           map.on('error', (e) => {
