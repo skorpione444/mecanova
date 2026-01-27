@@ -25,6 +25,9 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.16.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.16.0/mapbox-gl.css" rel="stylesheet" />
+    <script src="config.js"></script>
     <style type="text/tailwindcss">
 
       @theme inline {
@@ -95,6 +98,18 @@
 
         --radius: 0rem;
       }
+      
+      #mapbox-globe {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      
+      #mapbox-globe .mapboxgl-canvas {
+        position: absolute;
+      }
     </style>
   </head>
   <body>
@@ -122,10 +137,11 @@
         </div>
       </header>
       <section
-        class="relative pt-40 pb-32 px-8 lg:px-12 flex flex-col items-center justify-center text-center min-h-[90vh]"
+        class="relative pt-40 pb-32 px-8 lg:px-12 flex flex-col items-center justify-center text-center min-h-[90vh] overflow-hidden"
       >
+        <div id="mapbox-globe" class="absolute inset-0 z-0"></div>
         <div
-          class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#2a2a2a] via-background to-background opacity-40 z-0"
+          class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#2a2a2a] via-background/80 to-background/90 opacity-60 z-[1]"
         ></div>
         <div class="relative z-10 max-w-4xl mx-auto space-y-10 animate-fade-in">
           <span
@@ -374,6 +390,72 @@
         </div>
       </footer>
     </div>
+    <script>
+      // Mapbox Globe Background
+      (function() {
+        // Get token from config.js or use fallback
+        const accessToken = window.MAPBOX_TOKEN || 'pk.eyJ1Ijoic2tvcnBpb25lNDQ0IiwiYSI6ImNtaG94dHpleTAwMXYwMXNlaG0xZjlleXIifQ.YourTokenHere';
+        
+        if (!accessToken || accessToken.includes('YourTokenHere')) {
+          console.warn('Mapbox token not set. Please add your token to config.js file.');
+          return;
+        }
+        
+        mapboxgl.accessToken = accessToken;
+        
+        const mapContainer = document.getElementById('mapbox-globe');
+        if (!mapContainer) return;
+        
+        try {
+          const map = new mapboxgl.Map({
+            container: 'mapbox-globe',
+            style: 'mapbox://styles/skorpione/cmhoxtzey001v01sehm1f9eyr',
+            center: [0, 28],
+            zoom: 1.2,
+            pitch: 24,
+            bearing: 0,
+            projection: 'globe',
+            interactive: false, // Disable interactions for background
+            attributionControl: false, // Hide attribution for cleaner look
+          });
+          
+          map.on('load', () => {
+            map.setFog({
+              color: 'rgba(12, 12, 14, 0.92)',
+              'horizon-blend': 0.12,
+              'high-color': '#2b0010',
+              'space-color': '#1a1b1f',
+              'star-intensity': 0,
+            });
+            
+            // Disable all map controls and interactions
+            map.dragPan.disable();
+            map.dragRotate.disable();
+            map.scrollZoom.disable();
+            map.doubleClickZoom.disable();
+            map.touchZoomRotate.disable();
+            map.boxZoom.disable();
+            map.keyboard.disable();
+            
+            // Optional: Add subtle rotation animation
+            let rotation = 0;
+            function rotateGlobe() {
+              rotation += 0.1;
+              map.setBearing(rotation);
+              requestAnimationFrame(rotateGlobe);
+            }
+            // Uncomment to enable rotation:
+            // rotateGlobe();
+          });
+          
+          map.on('error', (e) => {
+            console.error('Mapbox error:', e.error);
+          });
+        } catch (error) {
+          console.error('Failed to initialize Mapbox globe:', error);
+        }
+      })();
+    </script>
   </body>
 </html>
 
