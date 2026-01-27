@@ -1,0 +1,15 @@
+{
+  "name": "mecanova",
+  "version": "1.0.0",
+  "description": "A modern website project",
+  "main": "index.js",
+  "scripts": {
+    "dev": "echo 'Development server coming soon'",
+    "build": "echo 'Build script coming soon'",
+    "start": "echo 'Start script coming soon'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
+
