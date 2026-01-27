@@ -396,6 +396,8 @@
         // Get token from config.js or use fallback
         const accessToken = window.MAPBOX_TOKEN || 'pk.eyJ1Ijoic2tvcnBpb25lNDQ0IiwiYSI6ImNtaG94dHpleTAwMXYwMXNlaG0xZjlleXIifQ.YourTokenHere';
         
+        console.log('Mapbox token check:', accessToken ? 'Token found' : 'No token');
+        
         if (!accessToken || accessToken.includes('YourTokenHere')) {
           console.warn('Mapbox token not set. Please add your token to config.js file.');
           return;
@@ -404,7 +406,12 @@
         mapboxgl.accessToken = accessToken;
         
         const mapContainer = document.getElementById('mapbox-globe');
-        if (!mapContainer) return;
+        if (!mapContainer) {
+          console.error('Mapbox container #mapbox-globe not found');
+          return;
+        }
+        
+        console.log('Initializing Mapbox globe...');
         
         try {
           const map = new mapboxgl.Map({
@@ -419,7 +426,10 @@
             attributionControl: false, // Hide attribution for cleaner look
           });
           
+          console.log('Mapbox map created, waiting for load...');
+          
           map.on('load', () => {
+            console.log('Mapbox map loaded');
             // Darken the background significantly
             map.setFog({
               color: 'rgba(0, 0, 0, 0.98)', // Much darker background
@@ -449,9 +459,11 @@
               requestAnimationFrame(rotateGlobe);
             }
             rotateGlobe();
+            console.log('Mapbox globe rotation started');
           });
           
           map.on('style.load', () => {
+            console.log('Mapbox style loaded, hiding labels...');
             const layers = map.getStyle().layers;
 
             layers.forEach(layer => {
@@ -466,7 +478,6 @@
                 map.setLayoutProperty(layer.id, 'visibility', 'none');
               }
             });
-          });
           });
           
           map.on('error', (e) => {
