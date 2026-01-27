@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LandingPage</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jost:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+    <style type="text/tailwindcss">
+
+      @theme inline {
+        --color-background: var(--background);
+        --color-foreground: var(--foreground);
+        --color-primary: var(--primary);
+        --color-primary-foreground: var(--primary-foreground);
+        --color-secondary: var(--secondary);
+        --color-secondary-foreground: var(--secondary-foreground);
+        --color-muted: var(--muted);
+        --color-muted-foreground: var(--muted-foreground);
+        --color-accent: var(--accent);
+        --color-accent-foreground: var(--accent-foreground);
+        --color-destructive: var(--destructive);
+        --color-card: var(--card);
+        --color-card-foreground: var(--card-foreground);
+        --color-popover: var(--popover);
+        --color-popover-foreground: var(--popover-foreground);
+        --color-border: var(--border);
+        --color-input: var(--input);
+        --color-ring: var(--ring);
+        --color-chart-1: var(--chart-1);
+        --color-chart-2: var(--chart-2);
+        --color-chart-3: var(--chart-3);
+        --color-chart-4: var(--chart-4);
+        --color-chart-5: var(--chart-5);
+
+        --font-font-sans: var(--font-sans);
+        --font-font-heading: var(--font-heading);
+        --font-font-serif: var(--font-serif);
+        --font-font-mono: var(--font-mono);
+
+        --radius-sm: calc(var(--radius) - 4px);
+        --radius-md: calc(var(--radius) - 2px);
+        --radius-lg: var(--radius);
+        --radius-xl: calc(var(--radius) + 4px);
+      }
+
+      :root {
+          --background: #111111;
+        --foreground: #ecdfcc;
+        --primary: #ecdfcc;
+        --primary-foreground: #111111;
+        --secondary: #2A2A2A;
+        --secondary-foreground: #ecdfcc;
+        --muted: #2A2A2A;
+        --muted-foreground: #cdc9c2;
+        --accent: #2A2A2A;
+        --accent-foreground: #ecdfcc;
+        --destructive: #7f1d1d;
+        --card: #1a1a1a;
+        --card-foreground: #ecdfcc;
+        --popover: #111111;
+        --popover-foreground: #ecdfcc;
+        --border: #2A2A2A;
+        --input: #2A2A2A;
+        --ring: #cdc9c2;
+        --chart-1: #ecdfcc;
+        --chart-2: #cdc9c2;
+        --chart-3: #A89F91;
+        --chart-4: #7D7468;
+        --chart-5: #5C5449;
+
+        --font-sans: "Manrope";
+        --font-heading: "Jost";
+        --font-serif: "Playfair Display";
+        --font-mono: "JetBrains Mono";
+
+        --radius: 0rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="min-h-screen bg-background text-foreground font-sans">
+      <header
+        class="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border"
+      >
+        <div class="flex items-center justify-between px-6 py-4">
+          <div class="h-8 flex items-center">
+            <img
+              src="https://ggrhecslgdflloszjkwl.supabase.co/storage/v1/object/public/user-assets/Fy3hXuVOljA/ai/MECANOVA-1FNewGoZTaV.png"
+              alt="Mecanova Logo"
+              class="h-full w-auto object-contain"
+            />
+          </div>
+          <button class="p-2 text-foreground">
+            <iconify-icon icon="solar:hamburger-menu-linear" class="size-8"></iconify-icon>
+          </button>
+        </div>
+      </header>
+      <section
+        class="relative pt-32 pb-20 px-6 flex flex-col items-center justify-center text-center min-h-[85vh]"
+      >
+        <div
+          class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#2a2a2a] via-background to-background opacity-40 z-0"
+        ></div>
+        <div class="relative z-10 max-w-lg mx-auto space-y-8 animate-fade-in">
+          <span
+            class="text-xs uppercase tracking-[0.3em] text-muted-foreground font-medium border-b border-muted-foreground/30 pb-1 inline-block"
+            >Est. 2024</span
+          >
+          <h1 class="text-5xl md:text-6xl font-heading font-light leading-[1.1] tracking-tight">
+            Premium Spirits<br /><span class="text-muted-foreground italic font-serif"
+              >Import &amp; Distribution</span
+            >
+          </h1>
+          <p class="text-lg text-muted-foreground leading-relaxed max-w-sm mx-auto">
+            Curating exceptional agave spirits for global partners. We bridge the gap between
+            artisanal producers and discerning markets.
+          </p>
+          <div class="pt-8">
+            <button
+              class="bg-primary text-primary-foreground px-8 py-4 uppercase tracking-widest text-sm hover:bg-muted-foreground transition-colors duration-300 w-full sm:w-auto"
+            >
+              Explore Portfolio
+            </button>
+          </div>
+        </div>
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+          <iconify-icon
+            icon="solar:arrow-down-linear"
+            class="size-6 text-muted-foreground opacity-50"
+          ></iconify-icon>
+        </div>
+      </section>
+      <section class="py-20 px-6 bg-card/30">
+        <div class="max-w-4xl mx-auto space-y-12">
+          <div class="flex flex-col items-start gap-4 mb-8">
+            <h2 class="text-3xl font-heading font-light tracking-wide">Our Portfolio</h2>
+            <div class="h-px w-20 bg-primary"></div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div
+              class="group bg-card hover:bg-card/80 transition-colors duration-300 border border-border/50 p-8 flex flex-col justify-between h-80 relative overflow-hidden"
+            >
+              <div
+                class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity"
+              >
+                <iconify-icon icon="mdi:glass-cocktail" class="size-24"></iconify-icon>
+              </div>
+              <div class="space-y-4 z-10">
+                <span class="text-xs uppercase tracking-widest text-muted-foreground"
+                  >Category 01</span
+                >
+                <h3 class="text-2xl font-heading text-primary">Tequila</h3>
+                <p class="text-muted-foreground text-sm leading-relaxed">
+                  Sourced from the highlands of Jalisco, our tequila selection represents the
+                  pinnacle of agave craftsmanship.
+                </p>
+              </div>
+              <div
+                class="pt-4 flex items-center text-primary text-sm uppercase tracking-wider font-medium"
+              >
+                View Collection
+                <iconify-icon icon="solar:arrow-right-linear" class="ml-2 size-4"></iconify-icon>
+              </div>
+            </div>
+            <div
+              class="group bg-card hover:bg-card/80 transition-colors duration-300 border border-border/50 p-8 flex flex-col justify-between h-80 relative overflow-hidden"
+            >
+              <div
+                class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity"
+              >
+                <iconify-icon icon="lucide:flame" class="size-24"></iconify-icon>
+              </div>
+              <div class="space-y-4 z-10">
+                <span class="text-xs uppercase tracking-widest text-muted-foreground"
+                  >Category 02</span
+                >
+                <h3 class="text-2xl font-heading text-primary">Mezcal</h3>
+                <p class="text-muted-foreground text-sm leading-relaxed">
+                  Authentic, smoky, and complex. Small-batch artisanal mezcals that honor
+                  traditional production methods.
+                </p>
+              </div>
+              <div
+                class="pt-4 flex items-center text-primary text-sm uppercase tracking-wider font-medium"
+              >
+                View Collection
+                <iconify-icon icon="solar:arrow-right-linear" class="ml-2 size-4"></iconify-icon>
+              </div>
+            </div>
+            <div
+              class="group bg-card hover:bg-card/80 transition-colors duration-300 border border-border/50 p-8 flex flex-col justify-between h-80 relative overflow-hidden"
+            >
+              <div
+                class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity"
+              >
+                <iconify-icon icon="solar:leaf-linear" class="size-24"></iconify-icon>
+              </div>
+              <div class="space-y-4 z-10">
+                <span class="text-xs uppercase tracking-widest text-muted-foreground"
+                  >Category 03</span
+                >
+                <h3 class="text-2xl font-heading text-primary">Raicilla</h3>
+                <p class="text-muted-foreground text-sm leading-relaxed">
+                  The untamed spirit of Jalisco. Discover the floral and herbal notes of this rising
+                  star in the agave world.
+                </p>
+              </div>
+              <div
+                class="pt-4 flex items-center text-primary text-sm uppercase tracking-wider font-medium"
+              >
+                View Collection
+                <iconify-icon icon="solar:arrow-right-linear" class="ml-2 size-4"></iconify-icon>
+              </div>
+            </div>
+            <div
+              class="group bg-card hover:bg-card/80 transition-colors duration-300 border border-border/50 p-8 flex flex-col justify-between h-80 relative overflow-hidden"
+            >
+              <div
+                class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity"
+              >
+                <iconify-icon icon="solar:star-linear" class="size-24"></iconify-icon>
+              </div>
+              <div class="space-y-4 z-10">
+                <span class="text-xs uppercase tracking-widest text-muted-foreground"
+                  >Category 04</span
+                >
+                <h3 class="text-2xl font-heading text-primary">Premium Spirits</h3>
+                <p class="text-muted-foreground text-sm leading-relaxed">
+                  Beyond agave. A curated selection of exceptional spirits for sophisticated palates
+                  and exclusive venues.
+                </p>
+              </div>
+              <div
+                class="pt-4 flex items-center text-primary text-sm uppercase tracking-wider font-medium"
+              >
+                View Collection
+                <iconify-icon icon="solar:arrow-right-linear" class="ml-2 size-4"></iconify-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="h-64 w-full bg-muted relative overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1516534775068-ba3e7458af70?w=1200&amp;q=80"
+          alt="Agave Field"
+          class="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700"
+        />
+        <div class="absolute inset-0 flex items-center justify-center bg-black/40">
+          <iconify-icon
+            icon="solar:medal-star-linear"
+            class="size-16 text-primary opacity-80"
+          ></iconify-icon>
+        </div>
+      </div>
+      <section class="py-24 px-6 bg-background relative">
+        <div class="max-w-3xl mx-auto">
+          <div class="flex flex-col items-center text-center gap-6 mb-12">
+            <h2 class="text-3xl font-heading font-light tracking-wide text-primary">
+              About Mecanova
+            </h2>
+            <div class="h-px w-12 bg-muted-foreground"></div>
+          </div>
+          <div class="space-y-8 text-muted-foreground leading-relaxed text-lg font-light">
+            <p>
+              <strong class="text-primary font-medium">Mecanova</strong> stands at the intersection
+              of heritage and commerce. Founded with a singular vision to elevate the global spirits
+              trade, we specialize in bridging the gap between Mexico's finest artisanal
+              distilleries and the international market.
+            </p>
+            <p>
+              We are not just importers; we are custodians of quality. Our team rigorously vets
+              every partner, ensuring strict compliance with international trade regulations while
+              preserving the authentic character of each spirit. From sourcing to logistics, we
+              handle the complexities so our partners can focus on what they do best.
+            </p>
+            <p>
+              As a trusted B2B partner, we understand that reliability is the ultimate luxury. Our
+              infrastructure is built to support distributors, retailers, and hospitality groups who
+              demand consistency, transparency, and excellence in every bottle.
+            </p>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 pt-8 border-t border-border">
+            <div class="text-center space-y-2">
+              <h4 class="text-3xl font-heading text-primary">15+</h4>
+              <p class="text-xs uppercase tracking-widest text-muted-foreground">
+                Years Experience
+              </p>
+            </div>
+            <div class="text-center space-y-2">
+              <h4 class="text-3xl font-heading text-primary">50+</h4>
+              <p class="text-xs uppercase tracking-widest text-muted-foreground">Global Partners</p>
+            </div>
+            <div class="text-center space-y-2">
+              <h4 class="text-3xl font-heading text-primary">100%</h4>
+              <p class="text-xs uppercase tracking-widest text-muted-foreground">Compliance</p>
+            </div>
+            <div class="text-center space-y-2">
+              <h4 class="text-3xl font-heading text-primary">24/7</h4>
+              <p class="text-xs uppercase tracking-widest text-muted-foreground">Support</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="py-20 px-6 bg-card border-t border-border">
+        <div class="max-w-xl mx-auto">
+          <div class="mb-10">
+            <h2 class="text-3xl font-heading font-light mb-4">Partner With Us</h2>
+            <p class="text-muted-foreground">
+              Interested in distributing our portfolio or sourcing premium spirits? We welcome
+              inquiries from distributors, retailers, and hospitality partners worldwide.
+            </p>
+          </div>
+          <form class="space-y-6">
+            <div class="space-y-1">
+              <label class="text-xs uppercase tracking-widest text-muted-foreground ml-1"
+                >Full Name</label
+              ><input
+                type="text"
+                class="w-full bg-input border-b border-border focus:border-primary text-foreground px-4 py-3 outline-none transition-colors rounded-none placeholder:text-muted-foreground/30"
+                placeholder="Sebastian Güth"
+              />
+            </div>
+            <div class="space-y-1">
+              <label class="text-xs uppercase tracking-widest text-muted-foreground ml-1"
+                >Company</label
+              ><input
+                type="text"
+                class="w-full bg-input border-b border-border focus:border-primary text-foreground px-4 py-3 outline-none transition-colors rounded-none placeholder:text-muted-foreground/30"
+                placeholder="Company Name"
+              />
+            </div>
+            <div class="space-y-1">
+              <label class="text-xs uppercase tracking-widest text-muted-foreground ml-1"
+                >Email Address</label
+              ><input
+                type="email"
+                class="w-full bg-input border-b border-border focus:border-primary text-foreground px-4 py-3 outline-none transition-colors rounded-none placeholder:text-muted-foreground/30"
+                placeholder="sebastian@example.com"
+              />
+            </div>
+            <div class="space-y-1">
+              <label class="text-xs uppercase tracking-widest text-muted-foreground ml-1"
+                >Inquiry</label
+              ><textarea
+                rows="4"
+                class="w-full bg-input border-b border-border focus:border-primary text-foreground px-4 py-3 outline-none transition-colors rounded-none resize-none placeholder:text-muted-foreground/30"
+                placeholder="Tell us about your distribution needs..."
+              ></textarea>
+            </div>
+            <button
+              class="w-full bg-primary text-primary-foreground py-4 uppercase tracking-widest text-sm font-medium hover:bg-[#cdc9c2] transition-colors mt-8"
+            >
+              Send Inquiry
+            </button>
+          </form>
+        </div>
+      </section>
+      <footer class="py-12 px-6 border-t border-border bg-background text-center">
+        <div class="flex justify-center mb-8">
+          <img
+            src="https://ggrhecslgdflloszjkwl.supabase.co/storage/v1/object/public/user-assets/Fy3hXuVOljA/ai/MECANOVA-1FNewGoZTaV.png"
+            alt="Mecanova Logo"
+            class="h-6 w-auto opacity-50 grayscale"
+          />
+        </div>
+        <div class="flex justify-center gap-8 mb-8">
+          <a href="#" class="text-muted-foreground hover:text-primary transition-colors"
+            ><iconify-icon icon="mdi:linkedin" class="size-6"></iconify-icon></a
+          ><a href="#" class="text-muted-foreground hover:text-primary transition-colors"
+            ><iconify-icon icon="mdi:instagram" class="size-6"></iconify-icon></a
+          ><a href="#" class="text-muted-foreground hover:text-primary transition-colors"
+            ><iconify-icon icon="mdi:twitter" class="size-6"></iconify-icon
+          ></a>
+        </div>
+        <div class="text-sm text-muted-foreground/60 space-y-2">
+          <p>© 2024 Mecanova. All rights reserved.</p>
+          <div class="flex justify-center gap-4 text-xs">
+            <a href="#" class="hover:text-primary">Privacy Policy</a><span>|</span
+            ><a href="#" class="hover:text-primary">Terms of Service</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
+
