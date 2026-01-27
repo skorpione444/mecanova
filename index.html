@@ -449,17 +449,17 @@
             map.keyboard.disable();
             
             // Continuous rotation animation - move center around the globe
-            // Starting from Mexico, rotating left shows: Mexico → Atlantic → Europe → Asia → Pacific → back to Mexico
+            // Starting from Mexico, rotating right shows: Mexico → Atlantic → Europe → Asia → Pacific → back to Mexico
             let longitude = -99; // Start at Mexico's longitude
             const baseLatitude = 23; // Mexico's latitude
             
             function rotateGlobe() {
-              // Move longitude eastward (left rotation) to show different continents
-              longitude -= 0.1; // Move west (which appears as left rotation)
+              // Move longitude eastward (right rotation) to show different continents
+              longitude += 0.1; // Move east (which appears as right rotation)
               
               // Wrap around when we complete a full circle
-              if (longitude <= -180) {
-                longitude = 180;
+              if (longitude >= 180) {
+                longitude = -180;
               }
               
               // Update the center to show different parts of the world
