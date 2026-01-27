@@ -472,10 +472,12 @@
           });
           
           map.on('style.load', () => {
-            console.log('Mapbox style loaded, hiding labels...');
+            console.log('Mapbox style loaded, hiding labels and updating borders...');
             const layers = map.getStyle().layers;
+            const mecanovaBeige = '#ecdfcc'; // Mecanova brand beige color
 
             layers.forEach(layer => {
+              // Hide labels
               if (
                 layer.type === 'symbol' &&
                 (
@@ -486,7 +488,64 @@
               ) {
                 map.setLayoutProperty(layer.id, 'visibility', 'none');
               }
+              
+              // Update border colors to Mecanova beige with varying intensities
+              if (
+                layer.type === 'line' &&
+                (
+                  layer.id.includes('boundary') ||
+                  layer.id.includes('border') ||
+                  layer.id.includes('admin')
+                )
+              ) {
+                try {
+                  // Different border intensities based on layer type
+                  let borderColor = mecanovaBeige;
+                  let borderOpacity = 0.3;
+                  let borderWidth = 0.5;
+                  
+                  // Major country boundaries - more visible
+                  if (layer.id.includes('admin-0') || layer.id.includes('country')) {
+                    borderOpacity = 0.5;
+                    borderWidth = 0.8;
+                  }
+                  // State/province boundaries - medium visibility
+                  else if (layer.id.includes('admin-1') || layer.id.includes('state')) {
+                    borderOpacity = 0.35;
+                    borderWidth = 0.6;
+                  }
+                  // Background/buffer borders - subtle
+                  else if (layer.id.includes('bg') || layer.id.includes('buffer')) {
+                    borderOpacity = 0.15;
+                    borderWidth = 1.0;
+                  }
+                  // Other boundaries - default
+                  else {
+                    borderOpacity = 0.25;
+                    borderWidth = 0.5;
+                  }
+                  
+                  // Apply border color and opacity
+                  if (map.getPaintProperty(layer.id, 'line-color')) {
+                    map.setPaintProperty(layer.id, 'line-color', borderColor);
+                  }
+                  if (map.getPaintProperty(layer.id, 'line-opacity')) {
+                    map.setPaintProperty(layer.id, 'line-opacity', borderOpacity);
+                  } else {
+                    // If opacity property doesn't exist, set color with opacity
+                    const beigeWithOpacity = mecanovaBeige + Math.floor(borderOpacity * 255).toString(16).padStart(2, '0');
+                    map.setPaintProperty(layer.id, 'line-color', beigeWithOpacity);
+                  }
+                  if (map.getPaintProperty(layer.id, 'line-width')) {
+                    map.setPaintProperty(layer.id, 'line-width', borderWidth);
+                  }
+                } catch (e) {
+                  console.warn(`Could not update border layer ${layer.id}:`, e);
+                }
+              }
             });
+            
+            console.log('Borders updated to Mecanova beige');
           });
           
           map.on('error', (e) => {
