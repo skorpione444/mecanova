@@ -448,41 +448,22 @@
             map.boxZoom.disable();
             map.keyboard.disable();
             
-            // Continuous rotation animation - rotate around the globe
+            // Continuous rotation animation - move center around the globe
             // Starting from Mexico, rotating left shows: Mexico → Atlantic → Europe → Asia → Pacific → back to Mexico
-            let bearing = 0;
-            const mexicoCenter = [-99, 23]; // Mexico coordinates
+            let longitude = -99; // Start at Mexico's longitude
+            const baseLatitude = 23; // Mexico's latitude
             
             function rotateGlobe() {
-              // Rotate bearing counter-clockwise (left)
-              bearing -= 0.1;
-              if (bearing <= -360) {
-                bearing = 0;
+              // Move longitude eastward (left rotation) to show different continents
+              longitude -= 0.1; // Move west (which appears as left rotation)
+              
+              // Wrap around when we complete a full circle
+              if (longitude <= -180) {
+                longitude = 180;
               }
               
-              // Calculate new center point to rotate around the globe
-              // This creates a circular path around the globe
-              const radius = 0; // Keep center fixed, rotate bearing instead
-              
-              // Set the bearing to rotate the view around the fixed center
-              map.setBearing(bearing);
-              
-              // To show different continents, we need to rotate the center around the globe
-              // Calculate longitude offset based on bearing
-              const longitudeOffset = (bearing * Math.PI) / 180;
-              const newCenter = [
-                mexicoCenter[0] + (longitudeOffset * 50), // Move longitude as we rotate
-                mexicoCenter[1] // Keep latitude relatively stable
-              ];
-              
-              // Actually, let's use a better approach - rotate center coordinates around the globe
-              const angle = (bearing * Math.PI) / 180;
-              const earthRadius = 180; // Approximate degrees to move around globe
-              const newLon = mexicoCenter[0] + (Math.sin(angle) * 100);
-              const newLat = mexicoCenter[1] + (Math.cos(angle) * 30);
-              
-              map.setCenter([newLon, newLat]);
-              map.setBearing(bearing);
+              // Update the center to show different parts of the world
+              map.setCenter([longitude, baseLatitude]);
               
               requestAnimationFrame(rotateGlobe);
             }
