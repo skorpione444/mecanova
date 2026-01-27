@@ -417,10 +417,10 @@
           const map = new mapboxgl.Map({
             container: 'mapbox-globe',
             style: 'mapbox://styles/skorpione/cmhoxtzey001v01sehm1f9eyr',
-            center: [0, 20], // Moved up to reduce top whitespace
+            center: [-99, 23], // Mexico centered (longitude, latitude)
             zoom: 1.5, // Zoomed in slightly to crop top whitespace
             pitch: 30, // Increased pitch to show globe higher
-            bearing: 0,
+            bearing: 0, // Start facing Mexico
             projection: 'globe',
             interactive: false, // Disable interactions for background
             attributionControl: false, // Hide attribution for cleaner look
@@ -448,11 +448,12 @@
             map.boxZoom.disable();
             map.keyboard.disable();
             
-            // Continuous rotation animation
+            // Continuous rotation animation - rotate left (counter-clockwise)
+            // Starting from Mexico, rotating left shows: Mexico → Atlantic → Europe → Asia → Pacific → back to Mexico
             let rotation = 0;
             function rotateGlobe() {
-              rotation += 0.1;
-              if (rotation >= 360) {
+              rotation -= 0.1; // Subtract to rotate counter-clockwise (left)
+              if (rotation <= -360) {
                 rotation = 0;
               }
               map.setBearing(rotation);
