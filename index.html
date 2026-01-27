@@ -428,50 +428,24 @@
               'space-color': '#000000', // Pure black
               'star-intensity': 0,
             });
-            
-            // Hide only text label layers (not all symbol layers to preserve borders)
-            const labelLayerNames = [
-              'country-label', 'country-label-lg', 'country-label-md', 'country-label-sm',
-              'state-label', 'state-label-lg', 'state-label-md',
-              'settlement-major-label', 'settlement-major-label-lg', 'settlement-minor-label',
-              'place-city-lg-n', 'place-city-md-n', 'place-city-sm', 'place-town', 'place-village',
-              'place-label', 'poi-label'
-            ];
-            
-            labelLayerNames.forEach((layerId) => {
-              try {
-                if (map.getLayer(layerId)) {
-                  map.setLayoutProperty(layerId, 'visibility', 'none');
-                }
-              } catch (e) {
-                // Layer doesn't exist, continue
+          });
+          
+          map.on('style.load', () => {
+            const layers = map.getStyle().layers;
+
+            layers.forEach(layer => {
+              if (
+                layer.type === 'symbol' &&
+                (
+                  layer.id.includes('label') ||
+                  layer.id.includes('place') ||
+                  layer.id.includes('country')
+                )
+              ) {
+                map.setLayoutProperty(layer.id, 'visibility', 'none');
               }
             });
-            
-            // Also check style layers for any layers with 'label' in the name (but only text labels)
-            try {
-              const style = map.getStyle();
-              if (style && style.layers) {
-                style.layers.forEach((layer) => {
-                  // Only hide layers that are explicitly label layers (contain 'label' in name)
-                  // and are symbol layers with text (not borders or other symbols)
-                  if (layer.type === 'symbol' && 
-                      layer.id.toLowerCase().includes('label') &&
-                      !layer.id.toLowerCase().includes('border') &&
-                      !layer.id.toLowerCase().includes('line')) {
-                    try {
-                      if (map.getLayer(layer.id)) {
-                        map.setLayoutProperty(layer.id, 'visibility', 'none');
-                      }
-                    } catch (e) {
-                      // Continue
-                    }
-                  }
-                });
-              }
-            } catch (e) {
-              // Continue
-            }
+          });
             
             // Disable all map controls and interactions
             map.dragPan.disable();
