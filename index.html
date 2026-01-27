@@ -429,26 +429,53 @@
               'star-intensity': 0,
             });
             
-            // Remove all label layers
-            const labelLayers = [
-              'country-label',
-              'country-label-lg',
-              'country-label-md',
-              'state-label',
-              'state-label-lg',
-              'settlement-major-label',
-              'settlement-major-label-lg',
-              'settlement-minor-label',
-              'place-city-lg-n',
-              'place-city-md-n',
-              'place-city-sm',
-              'place-town',
-              'place-village',
+            // Remove all label layers - comprehensive approach
+            const style = map.getStyle();
+            if (style && style.layers) {
+              style.layers.forEach((layer) => {
+                // Check if layer is a label/symbol layer
+                if (layer.type === 'symbol' || 
+                    layer.id.includes('label') || 
+                    layer.id.includes('Label') ||
+                    layer.id.includes('place') ||
+                    layer.id.includes('settlement') ||
+                    layer.id.includes('country') ||
+                    layer.id.includes('state')) {
+                  try {
+                    // Try to hide it
+                    if (map.getLayer(layer.id)) {
+                      map.setLayoutProperty(layer.id, 'visibility', 'none');
+                    }
+                    // Also make text transparent as fallback
+                    if (map.getPaintProperty(layer.id, 'text-color')) {
+                      map.setPaintProperty(layer.id, 'text-color', 'rgba(0, 0, 0, 0)');
+                    }
+                    if (map.getPaintProperty(layer.id, 'text-halo-color')) {
+                      map.setPaintProperty(layer.id, 'text-halo-color', 'rgba(0, 0, 0, 0)');
+                    }
+                  } catch (e) {
+                    // Layer might not support these properties, continue
+                  }
+                }
+              });
+            }
+            
+            // Also try common label layer names
+            const commonLabelLayers = [
+              'country-label', 'country-label-lg', 'country-label-md', 'country-label-sm',
+              'state-label', 'state-label-lg', 'state-label-md',
+              'settlement-major-label', 'settlement-major-label-lg', 'settlement-minor-label',
+              'place-city-lg-n', 'place-city-md-n', 'place-city-sm', 'place-town', 'place-village',
+              'place-label', 'poi-label', 'road-label', 'waterway-label'
             ];
             
-            labelLayers.forEach((layerId) => {
-              if (map.getLayer(layerId)) {
-                map.setLayoutProperty(layerId, 'visibility', 'none');
+            commonLabelLayers.forEach((layerId) => {
+              try {
+                if (map.getLayer(layerId)) {
+                  map.setLayoutProperty(layerId, 'visibility', 'none');
+                }
+              } catch (e) {
+                // Layer doesn't exist, continue
               }
             });
             
