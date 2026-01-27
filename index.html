@@ -428,24 +428,6 @@
               'space-color': '#000000', // Pure black
               'star-intensity': 0,
             });
-          });
-          
-          map.on('style.load', () => {
-            const layers = map.getStyle().layers;
-
-            layers.forEach(layer => {
-              if (
-                layer.type === 'symbol' &&
-                (
-                  layer.id.includes('label') ||
-                  layer.id.includes('place') ||
-                  layer.id.includes('country')
-                )
-              ) {
-                map.setLayoutProperty(layer.id, 'visibility', 'none');
-              }
-            });
-          });
             
             // Disable all map controls and interactions
             map.dragPan.disable();
@@ -467,6 +449,24 @@
               requestAnimationFrame(rotateGlobe);
             }
             rotateGlobe();
+          });
+          
+          map.on('style.load', () => {
+            const layers = map.getStyle().layers;
+
+            layers.forEach(layer => {
+              if (
+                layer.type === 'symbol' &&
+                (
+                  layer.id.includes('label') ||
+                  layer.id.includes('place') ||
+                  layer.id.includes('country')
+                )
+              ) {
+                map.setLayoutProperty(layer.id, 'visibility', 'none');
+              }
+            });
+          });
           });
           
           map.on('error', (e) => {
