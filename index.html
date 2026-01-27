@@ -419,47 +419,6 @@
             attributionControl: false, // Hide attribution for cleaner look
           });
           
-          // Function to hide all labels
-          const hideAllLabels = () => {
-            try {
-              const style = map.getStyle();
-              if (style && style.layers) {
-                style.layers.forEach((layer) => {
-                  // Check if layer is a label/symbol layer
-                  if (layer.type === 'symbol' || 
-                      layer.id.toLowerCase().includes('label') || 
-                      layer.id.toLowerCase().includes('place') ||
-                      layer.id.toLowerCase().includes('settlement') ||
-                      layer.id.toLowerCase().includes('country') ||
-                      layer.id.toLowerCase().includes('state') ||
-                      layer.id.toLowerCase().includes('poi')) {
-                    try {
-                      // Hide the layer
-                      if (map.getLayer(layer.id)) {
-                        map.setLayoutProperty(layer.id, 'visibility', 'none');
-                      }
-                      // Also make text transparent as fallback
-                      const paintProps = ['text-color', 'text-halo-color', 'icon-color'];
-                      paintProps.forEach((prop) => {
-                        try {
-                          if (map.getPaintProperty(layer.id, prop) !== undefined) {
-                            map.setPaintProperty(layer.id, prop, 'rgba(0, 0, 0, 0)');
-                          }
-                        } catch (e) {
-                          // Property doesn't exist, continue
-                        }
-                      });
-                    } catch (e) {
-                      // Layer might not support these properties, continue
-                    }
-                  }
-                });
-              }
-            } catch (e) {
-              console.warn('Error hiding labels:', e);
-            }
-          };
-          
           map.on('load', () => {
             // Darken the background significantly
             map.setFog({
@@ -470,15 +429,49 @@
               'star-intensity': 0,
             });
             
-            // Hide labels immediately
-            hideAllLabels();
+            // Hide only text label layers (not all symbol layers to preserve borders)
+            const labelLayerNames = [
+              'country-label', 'country-label-lg', 'country-label-md', 'country-label-sm',
+              'state-label', 'state-label-lg', 'state-label-md',
+              'settlement-major-label', 'settlement-major-label-lg', 'settlement-minor-label',
+              'place-city-lg-n', 'place-city-md-n', 'place-city-sm', 'place-town', 'place-village',
+              'place-label', 'poi-label'
+            ];
             
-            // Also hide labels when style loads/changes (in case style loads asynchronously)
-            map.on('style.load', hideAllLabels);
-            map.on('data', () => {
-              // Hide labels whenever new data loads
-              setTimeout(hideAllLabels, 100);
+            labelLayerNames.forEach((layerId) => {
+              try {
+                if (map.getLayer(layerId)) {
+                  map.setLayoutProperty(layerId, 'visibility', 'none');
+                }
+              } catch (e) {
+                // Layer doesn't exist, continue
+              }
             });
+            
+            // Also check style layers for any layers with 'label' in the name (but only text labels)
+            try {
+              const style = map.getStyle();
+              if (style && style.layers) {
+                style.layers.forEach((layer) => {
+                  // Only hide layers that are explicitly label layers (contain 'label' in name)
+                  // and are symbol layers with text (not borders or other symbols)
+                  if (layer.type === 'symbol' && 
+                      layer.id.toLowerCase().includes('label') &&
+                      !layer.id.toLowerCase().includes('border') &&
+                      !layer.id.toLowerCase().includes('line')) {
+                    try {
+                      if (map.getLayer(layer.id)) {
+                        map.setLayoutProperty(layer.id, 'visibility', 'none');
+                      }
+                    } catch (e) {
+                      // Continue
+                    }
+                  }
+                });
+              }
+            } catch (e) {
+              // Continue
+            }
             
             // Disable all map controls and interactions
             map.dragPan.disable();
