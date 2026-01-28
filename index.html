@@ -121,6 +121,29 @@
           0 0 20px rgba(236, 223, 204, 0.2),
           0 0 30px rgba(236, 223, 204, 0.1);
       }
+      
+      @keyframes heartbeat {
+        0%, 100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        25% {
+          transform: scale(1.008);
+          opacity: 0.98;
+        }
+        50% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        75% {
+          transform: scale(1.005);
+          opacity: 0.99;
+        }
+      }
+      
+      .mecanova-heartbeat {
+        animation: heartbeat 2s ease-in-out infinite;
+      }
     </style>
   </head>
   <body>
@@ -160,7 +183,7 @@
             >Est. 2024</span
           >
           <h1 class="flex flex-col items-center gap-2">
-            <span class="text-6xl md:text-7xl lg:text-8xl font-avant-garde font-light tracking-[0.15em] uppercase text-primary mecanova-glow">
+            <span class="text-5xl md:text-6xl lg:text-7xl font-avant-garde font-light tracking-[0.15em] uppercase text-primary mecanova-glow mecanova-heartbeat">
               MECANOVA
             </span>
             <div class="flex flex-col items-center gap-3">
