@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Technology | Mecanova</title>
+    <meta name="description" content="Technology infrastructure designed for disciplined distribution. System-level integrations, APIs, and data-driven tools for professional B2B partners." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jost:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+    <style type="text/tailwindcss">
+
+      @theme inline {
+        --color-background: var(--background);
+        --color-foreground: var(--foreground);
+        --color-primary: var(--primary);
+        --color-primary-foreground: var(--primary-foreground);
+        --color-secondary: var(--secondary);
+        --color-secondary-foreground: var(--secondary-foreground);
+        --color-muted: var(--muted);
+        --color-muted-foreground: var(--muted-foreground);
+        --color-accent: var(--accent);
+        --color-accent-foreground: var(--accent-foreground);
+        --color-destructive: var(--destructive);
+        --color-card: var(--card);
+        --color-card-foreground: var(--card-foreground);
+        --color-popover: var(--popover);
+        --color-popover-foreground: var(--popover-foreground);
+        --color-border: var(--border);
+        --color-input: var(--input);
+        --color-ring: var(--ring);
+        --color-chart-1: var(--chart-1);
+        --color-chart-2: var(--chart-2);
+        --color-chart-3: var(--chart-3);
+        --color-chart-4: var(--chart-4);
+        --color-chart-5: var(--chart-5);
+
+        --font-font-sans: var(--font-sans);
+        --font-font-heading: var(--font-heading);
+        --font-font-serif: var(--font-serif);
+        --font-font-mono: var(--font-mono);
+
+        --radius-sm: calc(var(--radius) - 4px);
+        --radius-md: calc(var(--radius) - 2px);
+        --radius-lg: var(--radius);
+        --radius-xl: calc(var(--radius) + 4px);
+      }
+
+      :root {
+          --background: #111111;
+        --foreground: #ecdfcc;
+        --primary: #ecdfcc;
+        --primary-foreground: #111111;
+        --secondary: #2A2A2A;
+        --secondary-foreground: #ecdfcc;
+        --muted: #2A2A2A;
+        --muted-foreground: #cdc9c2;
+        --accent: #2A2A2A;
+        --accent-foreground: #ecdfcc;
+        --destructive: #7f1d1d;
+        --card: #1a1a1a;
+        --card-foreground: #ecdfcc;
+        --popover: #111111;
+        --popover-foreground: #ecdfcc;
+        --border: #2A2A2A;
+        --input: #2A2A2A;
+        --ring: #cdc9c2;
+        --chart-1: #ecdfcc;
+        --chart-2: #cdc9c2;
+        --chart-3: #A89F91;
+        --chart-4: #7D7468;
+        --chart-5: #5C5449;
+
+        --font-sans: "Manrope";
+        --font-heading: "Jost";
+        --font-serif: "Playfair Display";
+        --font-mono: "JetBrains Mono";
+
+        --radius: 0rem;
+      }
+      
+      .nav-link-border {
+        border: 2px solid rgba(236, 223, 204, 0);
+        transition: border-color 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), color 0.3s ease;
+      }
+      
+      .nav-link-border:hover {
+        border-color: rgba(236, 223, 204, 1);
+      }
+      
+      .client-login-btn {
+        background-color: rgba(236, 223, 204, 1);
+        color: #111111;
+        border: 2px solid rgba(236, 223, 204, 1);
+        transition: background-color 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                    color 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                    border-color 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      
+      .client-login-btn:hover {
+        background-color: transparent;
+        color: rgba(236, 223, 204, 1);
+        border-color: rgba(236, 223, 204, 1);
+      }
+
+      /* Technology section styles - matching About section */
+      .tech-section {
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 650ms cubic-bezier(0.22, 1, 0.36, 1), transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+        will-change: opacity, transform;
+      }
+      .tech-section.reveal {
+        opacity: 1;
+        transform: none;
+      }
+
+      .tech-divider {
+        height: 1px;
+        background: rgba(205,201,194,0.30);
+        transform-origin: left;
+        transform: scaleX(0);
+        transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .tech-divider.draw { transform: scaleX(1); }
+
+      /* Reduced motion: remove transitions and show immediately */
+      @media (prefers-reduced-motion: reduce) {
+        .tech-section, .tech-divider {
+          transition: none !important;
+          transform: none !important;
+          opacity: 1 !important;
+        }
+        .tech-divider { transform: scaleX(1) !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="min-h-screen bg-background text-foreground font-sans">
+      <header
+        class="fixed top-0 left-0 right-0 z-[9999] backdrop-blur-md border-b border-border"
+        style="background-color: #0b0c0a;"
+      >
+        <div class="max-w-7xl mx-auto flex items-center justify-between px-8 lg:px-12 py-6">
+          <div class="h-12 flex items-center">
+            <a href="index.html" class="flex items-center">
+              <div class="relative h-12 w-12 mr-4 flex-shrink-0">
+                <img
+                  src="images/MECANOVA_jaguar_logo.svg"
+                  alt="Mecanova logo"
+                  class="absolute left-0 top-1/2 transform -translate-y-1/2 h-18 w-auto"
+                />
+              </div>
+              <h1 class="text-2xl lg:text-3xl font-sans font-light text-primary tracking-[0.15em] uppercase">
+                MECANOVA
+              </h1>
+            </a>
+          </div>
+          <nav class="hidden md:flex items-center gap-8">
+            <a href="index.html#portfolio" class="nav-link-border text-sm uppercase tracking-wider text-foreground hover:text-primary px-3 py-2 box-border">Portfolio</a>
+            <a href="index.html#about" class="nav-link-border text-sm uppercase tracking-wider text-foreground hover:text-primary px-3 py-2 box-border">About</a>
+            <a href="technology.html" class="nav-link-border text-sm uppercase tracking-wider text-foreground hover:text-primary px-3 py-2 box-border">Technology</a>
+            <a href="index.html#contact" class="nav-link-border text-sm uppercase tracking-wider text-foreground hover:text-primary px-3 py-2 box-border">Contact</a>
+            <a href="coming-soon.html" class="client-login-btn px-6 py-2 uppercase tracking-widest text-xs inline-block">
+              Client Log-In
+            </a>
+          </nav>
+          <button class="md:hidden p-2 text-foreground">
+            <iconify-icon icon="solar:hamburger-menu-linear" class="size-8"></iconify-icon>
+          </button>
+        </div>
+      </header>
+
+      <section class="pt-40 pb-32 px-8 lg:px-12 relative" style="background-color: #0b0c0a;">
+        <div class="max-w-[1100px] mx-auto">
+          <!-- Hero / Intro -->
+          <div class="flex flex-col items-center text-center gap-6 mb-24">
+            <h1 class="text-4xl lg:text-5xl font-heading font-semibold tracking-tight text-primary">
+              Technology
+            </h1>
+            <p class="text-lg text-[rgba(205,201,194,0.9)] max-w-2xl">
+              Infrastructure designed for disciplined distribution.
+            </p>
+          </div>
+
+          <!-- Sections -->
+          <div class="flex flex-col gap-16">
+            <!-- System-Level Integration -->
+            <div class="tech-section bg-transparent px-8 py-10 md:py-14" role="article" aria-label="System-Level Integration">
+              <div class="w-full">
+                <h2 class="text-2xl lg:text-3xl font-heading font-semibold tracking-tight text-primary mb-4">
+                  System-Level Integration
+                </h2>
+                <div class="tech-divider mt-4 mb-6" aria-hidden="true"></div>
+                <p class="text-[rgba(205,201,194,0.9)] leading-[1.6] text-base lg:text-lg">
+                  We are developing direct integrations that allow approved partners to connect MECANOVA into their inventory, ordering, and operational systems. This includes secure APIs for availability, allocations, and order status—reducing manual processes and improving accuracy.
+                </p>
+              </div>
+            </div>
+
+            <!-- Client Portal & APIs -->
+            <div class="tech-section bg-transparent px-8 py-10 md:py-14" role="article" aria-label="Client Portal & APIs">
+              <div class="w-full">
+                <h2 class="text-2xl lg:text-3xl font-heading font-semibold tracking-tight text-primary mb-4">
+                  Client Portal & APIs
+                </h2>
+                <div class="tech-divider mt-4 mb-6" aria-hidden="true"></div>
+                <p class="text-[rgba(205,201,194,0.9)] leading-[1.6] text-base lg:text-lg">
+                  Our client portal functions as an operational layer, not a marketing interface. Live availability, documentation, order history, and API access are provided through a controlled, permissioned environment.
+                </p>
+              </div>
+            </div>
+
+            <!-- Data & Planning Tools -->
+            <div class="tech-section bg-transparent px-8 py-10 md:py-14" role="article" aria-label="Data & Planning">
+              <div class="w-full">
+                <h2 class="text-2xl lg:text-3xl font-heading font-semibold tracking-tight text-primary mb-4">
+                  Data & Planning
+                </h2>
+                <div class="tech-divider mt-4 mb-6" aria-hidden="true"></div>
+                <p class="text-[rgba(205,201,194,0.9)] leading-[1.6] text-base lg:text-lg">
+                  Predictive tools support reordering, inventory planning, and seasonal demand assessment. These tools are designed to assist decision-making, not replace it.
+                </p>
+              </div>
+            </div>
+
+            <!-- Traceability & Verification -->
+            <div class="tech-section bg-transparent px-8 py-10 md:py-14" role="article" aria-label="Traceability">
+              <div class="w-full">
+                <h2 class="text-2xl lg:text-3xl font-heading font-semibold tracking-tight text-primary mb-4">
+                  Traceability
+                </h2>
+                <div class="tech-divider mt-4 mb-6" aria-hidden="true"></div>
+                <p class="text-[rgba(205,201,194,0.9)] leading-[1.6] text-base lg:text-lg">
+                  We are implementing verification layers that preserve origin, batch data, and production metadata—ensuring transparency without introducing unnecessary complexity.
+                </p>
+              </div>
+            </div>
+
+            <!-- Closing Statement -->
+            <div class="tech-section bg-transparent px-8 py-10 md:py-14" role="article">
+              <div class="w-full">
+                <p class="text-[rgba(205,201,194,0.9)] leading-[1.6] text-base lg:text-lg text-center max-w-2xl mx-auto">
+                  Technology applied with the same discipline as product selection.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="py-16 px-8 lg:px-12 border-t border-border bg-background text-center">
+        <div class="max-w-7xl mx-auto">
+          <div class="flex justify-center mb-10">
+            <h2 class="text-xl lg:text-2xl font-sans font-light text-primary/50 tracking-[0.15em] uppercase">
+              MECANOVA
+            </h2>
+          </div>
+          <div class="flex justify-center gap-10 mb-10">
+            <a href="#" class="text-muted-foreground hover:text-primary transition-colors"
+              ><iconify-icon icon="mdi:linkedin" class="size-7"></iconify-icon></a
+            ><a href="#" class="text-muted-foreground hover:text-primary transition-colors"
+              ><iconify-icon icon="mdi:instagram" class="size-7"></iconify-icon></a
+            ><a href="#" class="text-muted-foreground hover:text-primary transition-colors"
+              ><iconify-icon icon="mdi:twitter" class="size-7"></iconify-icon
+            ></a>
+          </div>
+          <div class="text-base text-muted-foreground/60 space-y-3">
+            <p>© 2024 Mecanova. All rights reserved.</p>
+            <div class="flex justify-center gap-6 text-sm">
+              <a href="#" class="hover:text-primary transition-colors">Privacy Policy</a><span>|</span
+              ><a href="#" class="hover:text-primary transition-colors">Terms of Service</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script>
+      (function () {
+        const techSections = Array.from(document.querySelectorAll('.tech-section'));
+        if (!techSections.length) return;
+
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReduced) {
+          // Immediately show content without transitions
+          techSections.forEach(s => {
+            s.classList.add('reveal');
+            const div = s.querySelector('.tech-divider');
+            if (div) div.classList.add('draw');
+          });
+          return;
+        }
+
+        const observer = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            const el = entry.target;
+            const index = techSections.indexOf(el);
+            // Delay after trigger: 80ms + stagger between sections 180ms
+            const delay = 80 + (index * 180);
+            setTimeout(() => {
+              el.classList.add('reveal');
+              const div = el.querySelector('.tech-divider');
+              if (div) {
+                // slight micro-delay so reveal transition begins first
+                setTimeout(() => div.classList.add('draw'), 20);
+              }
+            }, delay);
+            obs.unobserve(el); // trigger once
+          });
+        }, { threshold: 0.12 });
+
+        techSections.forEach(s => observer.observe(s));
+      })();
+    </script>
+  </body>
+</html>
+

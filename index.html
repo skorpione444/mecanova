@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mecanova | Premium Spirits Import & Distribution</title>
+    <title>Mecanova | Premium Agave Spirits Import, Distribution, and Infrastructure</title>
     <meta name="description" content="Mecanova connects exceptional agave spirits with European partners through compliant import execution, dependable logistics, and a long-term B2B focus." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -257,9 +257,80 @@
       .pillar:hover .keyword::after { transform: scaleX(1); }
       .pillar:hover .pillar-title { opacity: 1; transition: opacity 220ms ease-out; }
 
+      /* Portfolio card hover effect - border on "View Collection" text */
+      .portfolio-view-collection {
+        border: 2px solid transparent;
+        transition: none;
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.5rem;
+        margin: -0.25rem -0.5rem;
+      }
+      
+      .portfolio-view-collection.fade-in {
+        transition: border-color 0.8s ease;
+      }
+      
+      .group:hover .portfolio-view-collection {
+        border-color: var(--background);
+      }
+
       /* Responsive: reduce padding on mobile */
       @media (max-width: 640px) {
         .pillar { padding-left: 1.25rem; padding-right: 1.25rem; padding-top: 1.25rem; padding-bottom: 1.25rem; }
+      }
+
+      /* Hero text animations */
+      .hero-text-item {
+        opacity: 0;
+        transform: translateY(8px);
+        transition: opacity 1000ms cubic-bezier(0.22, 1, 0.36, 1),
+                    transform 1000ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .hero-text-item.revealed {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      /* MECANOVA letter-spacing animation */
+      .hero-mecanova {
+        letter-spacing: 0.21em !important; /* 0.15em + 0.06em */
+        transition: letter-spacing 1400ms ease-out;
+      }
+      .hero-mecanova.letter-spacing-complete {
+        letter-spacing: 0.15em !important; /* original value */
+      }
+      
+      /* Divider line animation */
+      .hero-divider {
+        transform: scaleX(0);
+        transform-origin: center;
+        transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .hero-divider.drawn {
+        transform: scaleX(1);
+      }
+      
+      /* Soft emphasis on Import | Distribution | Infrastructure */
+      .hero-emphasis {
+        opacity: 0.75;
+        transition: opacity 800ms ease-out;
+      }
+      .hero-emphasis.emphasized {
+        opacity: 1;
+      }
+      
+      /* Paragraph line blocks */
+      .hero-paragraph-line {
+        opacity: 0;
+        transform: translateY(6px);
+        transition: opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
+                    transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+        display: inline-block;
+      }
+      .hero-paragraph-line.revealed {
+        opacity: 1;
+        transform: translateY(0);
       }
 
       /* Reduced motion: remove transitions and show immediately */
@@ -270,6 +341,27 @@
           opacity: 1 !important;
         }
         .divider { transform: scaleX(1) !important; }
+        .portfolio-view-collection {
+          transition: none !important;
+        }
+        .hero-text-item,
+        .hero-paragraph-line {
+          opacity: 1 !important;
+          transform: none !important;
+          transition: none !important;
+        }
+        .hero-mecanova {
+          letter-spacing: 0.15em !important;
+          transition: none !important;
+        }
+        .hero-divider {
+          transform: scaleX(1) !important;
+          transition: none !important;
+        }
+        .hero-emphasis {
+          opacity: 1 !important;
+          transition: none !important;
+        }
       }
     </style>
   </head>
@@ -295,6 +387,7 @@
           <nav class="hidden md:flex items-center gap-8">
             <a href="#portfolio" class="nav-link-border text-sm uppercase tracking-wider text-foreground hover:text-primary px-3 py-2 box-border">Portfolio</a>
             <a href="#about" class="nav-link-border text-sm uppercase tracking-wider text-foreground hover:text-primary px-3 py-2 box-border">About</a>
+            <a href="technology.html" class="nav-link-border text-sm uppercase tracking-wider text-foreground hover:text-primary px-3 py-2 box-border">Technology</a>
             <a href="#contact" class="nav-link-border text-sm uppercase tracking-wider text-foreground hover:text-primary px-3 py-2 box-border">Contact</a>
             <a href="coming-soon.html" class="client-login-btn px-6 py-2 uppercase tracking-widest text-xs inline-block">
               Client Log-In
@@ -314,25 +407,30 @@
         ></div>
         <div class="absolute bottom-0 left-0 w-32 h-12 bg-black z-[2]"></div>
         <div class="relative z-10 max-w-4xl mx-auto space-y-10 animate-fade-in">
-          <span
-            class="text-sm uppercase tracking-[0.3em] text-muted-foreground font-medium border-b border-muted-foreground/30 pb-2 inline-block"
-            >Est. 2024</span
-          >
+          <div class="hero-text-item" id="hero-est">
+            <span
+              class="text-sm uppercase tracking-[0.3em] text-muted-foreground font-medium pb-2 inline-block relative"
+            >
+              Est. 2024
+              <span class="hero-divider absolute bottom-0 left-0 right-0 h-px bg-muted-foreground/30"></span>
+            </span>
+          </div>
           <h1 class="flex flex-col items-center gap-2">
-            <span class="text-5xl md:text-6xl lg:text-7xl font-avant-garde font-light tracking-[0.15em] uppercase text-primary mecanova-glow mecanova-heartbeat">
+            <span class="hero-text-item hero-mecanova text-5xl md:text-6xl lg:text-7xl font-avant-garde font-light uppercase text-primary mecanova-glow mecanova-heartbeat" id="hero-mecanova">
               MECANOVA
             </span>
-            <div class="flex flex-col items-center gap-3">
-              <span class="text-3xl md:text-4xl lg:text-5xl font-heading font-light text-muted-foreground italic font-serif mt-2 bg-black/40 px-4 py-2 rounded-sm inline-block">
-                Premium Spirits
+            <div class="flex flex-col items-center gap-6">
+              <span class="hero-text-item text-2xl md:text-3xl lg:text-4xl font-heading font-light text-muted-foreground italic font-serif mt-2 bg-black/40 px-4 py-2 rounded-sm inline-block" id="hero-premium">
+                Premium Agave Spirits
               </span>
-              <span class="text-3xl md:text-4xl lg:text-5xl font-heading font-light text-muted-foreground italic font-serif bg-black/40 px-4 py-2 rounded-sm inline-block">
-                Import &amp; Distribution
+              <span class="hero-text-item hero-emphasis text-xl md:text-2xl lg:text-3xl font-heading font-light text-muted-foreground font-serif bg-black/40 px-4 py-2 rounded-sm inline-block tracking-wide" id="hero-infrastructure">
+                Import | Distribution | Infrastructure
               </span>
             </div>
           </h1>
-          <p class="text-xl lg:text-2xl text-muted-foreground leading-relaxed max-w-2xl mx-auto bg-black/40 px-6 py-3 rounded-sm inline-block">
-            We connect exceptional agave spirits with European partners through compliant import execution, dependable logistics, and a long-term B2B focus.
+          <p class="text-xl lg:text-2xl text-muted-foreground leading-relaxed max-w-2xl mx-auto bg-black/40 px-6 py-3 rounded-sm inline-block" id="hero-paragraph">
+            <span class="hero-paragraph-line">We connect exceptional agave spirits with European partners through compliant import execution,</span>
+            <span class="hero-paragraph-line"> dependable logistics, and a long-term B2B focus.</span>
           </p>
           <div class="space-y-3 text-left max-w-xl mx-auto pt-4">
             <div class="flex items-start gap-3 bg-black/40 px-4 py-2 rounded-sm">
@@ -398,11 +496,13 @@
                   Premium tequila selected for clarity of terroir and production integrity—clean agave expression, balanced profiles, and reliable consistency for on-trade and retail. Built for partners who care about credibility, not gimmicks.
                 </p>
               </div>
-              <div
-                class="pt-4 flex items-center text-primary group-hover:text-background text-sm uppercase tracking-wider font-medium"
-              >
-                View Collection
-                <iconify-icon icon="solar:arrow-right-linear" class="ml-2 size-4"></iconify-icon>
+              <div class="pt-4">
+                <span
+                  class="portfolio-view-collection text-primary group-hover:text-background text-sm uppercase tracking-wider font-medium"
+                >
+                  View Collection
+                  <iconify-icon icon="solar:arrow-right-linear" class="ml-2 size-4"></iconify-icon>
+                </span>
               </div>
             </a>
             <a href="mezcal.html" class="group bg-card/70 hover:bg-primary transition-all duration-300 border-[3px] border-primary p-10 flex flex-col justify-between min-h-[400px] relative overflow-hidden block">
@@ -417,11 +517,13 @@
                   Craft mezcal with a focus on character and provenance—distinct agave profiles, thoughtful production, and transparent sourcing. Ideal for premium bars, specialist retailers, and partners building a serious spirits range.
                 </p>
               </div>
-              <div
-                class="pt-4 flex items-center text-primary group-hover:text-background text-sm uppercase tracking-wider font-medium"
-              >
-                View Collection
-                <iconify-icon icon="solar:arrow-right-linear" class="ml-2 size-4"></iconify-icon>
+              <div class="pt-4">
+                <span
+                  class="portfolio-view-collection text-primary group-hover:text-background text-sm uppercase tracking-wider font-medium"
+                >
+                  View Collection
+                  <iconify-icon icon="solar:arrow-right-linear" class="ml-2 size-4"></iconify-icon>
+                </span>
               </div>
             </a>
             <a href="raicilla.html" class="group bg-card/70 hover:bg-primary transition-all duration-300 border-[3px] border-primary p-10 flex flex-col justify-between min-h-[400px] relative overflow-hidden block">
@@ -436,11 +538,13 @@
                   A rare agave spirit defined by precision and character—bright aromatics, natural complexity, and a profile that stands apart without excess. Our raicilla selections are chosen for purity and balance, offering genuine differentiation for partners seeking something distinctive and uncompromised.
                 </p>
               </div>
-              <div
-                class="pt-4 flex items-center text-primary group-hover:text-background text-sm uppercase tracking-wider font-medium"
-              >
-                View Collection
-                <iconify-icon icon="solar:arrow-right-linear" class="ml-2 size-4"></iconify-icon>
+              <div class="pt-4">
+                <span
+                  class="portfolio-view-collection text-primary group-hover:text-background text-sm uppercase tracking-wider font-medium"
+                >
+                  View Collection
+                  <iconify-icon icon="solar:arrow-right-linear" class="ml-2 size-4"></iconify-icon>
+                </span>
               </div>
             </a>
           </div>
@@ -484,7 +588,7 @@
           <div class="flex flex-col items-center text-center gap-4 mb-12">
             <span class="about-eyebrow text-xs uppercase tracking-[0.25em] text-muted-foreground font-medium">About</span>
             <h2 class="about-heading text-4xl lg:text-5xl font-heading font-semibold tracking-tight text-primary">
-              Three Pillars
+              Four Pillars
             </h2>
             <p class="about-subhead text-lg text-[rgba(205,201,194,0.9)]">
               From origin to expression.
@@ -532,6 +636,21 @@
                   <div class="divider mt-4 mb-6" aria-hidden="true"></div>
                   <p class="pillar-body text-[rgba(205,201,194,0.9)] leading-[1.6] text-base lg:text-lg">
                     Our role is to translate integrity into professional European distribution. From compliance and documentation to market readiness, we apply the same rigor to distribution as we do to product selection—building long-term partnerships and sustainable category growth.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="pillar bg-transparent px-8 py-10 md:py-14" data-keyword="Technology" role="article" aria-label="Technology as Infrastructure">
+              <div class="flex items-start gap-6">
+                <div class="numeral text-[rgba(205,201,194,0.45)] text-xl font-serif leading-none">IV</div>
+                <div class="w-full">
+                  <h3 class="pillar-title text-2xl lg:text-3xl font-heading font-semibold tracking-tight text-primary">
+                    <span class="keyword">Technology</span> as Infrastructure
+                  </h3>
+                  <div class="divider mt-4 mb-6" aria-hidden="true"></div>
+                  <p class="pillar-body text-[rgba(205,201,194,0.9)] leading-[1.6] text-base lg:text-lg">
+                    We invest in technology not as a differentiator, but as infrastructure. Through system-level integrations, APIs, and data-driven tools, we remove friction from professional distribution while preserving product integrity. Technology, for us, enables disciplined growth without compromise.
                   </p>
                 </div>
               </div>
@@ -963,6 +1082,130 @@
         }, { threshold: 0.12 });
 
         pillars.forEach(p => observer.observe(p));
+      })();
+    </script>
+    <script>
+      // Portfolio card hover effect - slow fade-in, instant fade-out
+      (function() {
+        const portfolioCards = document.querySelectorAll('#portfolio .group');
+        if (!portfolioCards.length) return;
+
+        portfolioCards.forEach(card => {
+          const viewCollection = card.querySelector('.portfolio-view-collection');
+          if (!viewCollection) return;
+
+          card.addEventListener('mouseenter', () => {
+            // Add fade-in class to enable slow transition
+            viewCollection.classList.add('fade-in');
+          });
+
+          card.addEventListener('mouseleave', () => {
+            // Remove fade-in class immediately to disable transition
+            viewCollection.classList.remove('fade-in');
+            // Force immediate border removal by setting it directly
+            viewCollection.style.borderColor = 'transparent';
+            // Reset inline style after a brief moment to allow CSS to take over again
+            setTimeout(() => {
+              viewCollection.style.borderColor = '';
+            }, 10);
+          });
+        });
+      })();
+    </script>
+    <script>
+      // Hero text animations
+      (function() {
+        // Wait for DOM to be ready
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initHeroAnimations);
+        } else {
+          initHeroAnimations();
+        }
+        
+        function initHeroAnimations() {
+        // Check for reduced motion preference
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        if (prefersReduced) {
+          // Show everything immediately
+          document.querySelectorAll('.hero-text-item, .hero-paragraph-line').forEach(el => {
+            el.classList.add('revealed');
+          });
+          const divider = document.querySelector('.hero-divider');
+          if (divider) divider.classList.add('drawn');
+          const mecanova = document.querySelector('#hero-mecanova');
+          if (mecanova) mecanova.classList.add('letter-spacing-complete');
+          const emphasis = document.querySelector('.hero-emphasis');
+          if (emphasis) emphasis.classList.add('emphasized');
+          return;
+        }
+
+        // Animation sequence - wait for page to be ready
+        const initialDelay = 300; // Wait 300ms after page load
+        const staggerDelay = 450; // ms between items (slower, more visible)
+        let currentDelay = initialDelay;
+
+        // A) EST. 2024
+        const estElement = document.getElementById('hero-est');
+        if (estElement) {
+          setTimeout(() => {
+            estElement.classList.add('revealed');
+            // Divider animation: 500ms after EST. 2024 appears
+            const divider = estElement.querySelector('.hero-divider');
+            if (divider) {
+              setTimeout(() => {
+                divider.classList.add('drawn');
+              }, 500);
+            }
+          }, currentDelay);
+          currentDelay += staggerDelay;
+        }
+
+        // B) MECANOVA
+        const mecanova = document.getElementById('hero-mecanova');
+        if (mecanova) {
+          setTimeout(() => {
+            mecanova.classList.add('revealed');
+            // Letter-spacing animation starts concurrently after MECANOVA appears
+            // Start immediately when reveal begins (runs concurrently)
+            mecanova.classList.add('letter-spacing-complete');
+          }, currentDelay);
+          currentDelay += staggerDelay;
+        }
+
+        // C) Premium Agave Spirits
+        const premium = document.getElementById('hero-premium');
+        if (premium) {
+          setTimeout(() => {
+            premium.classList.add('revealed');
+          }, currentDelay);
+          currentDelay += staggerDelay;
+        }
+
+        // D) Import | Distribution | Infrastructure
+        const infrastructure = document.getElementById('hero-infrastructure');
+        if (infrastructure) {
+          setTimeout(() => {
+            infrastructure.classList.add('revealed');
+            // Soft emphasis: 1200ms after line becomes visible
+            setTimeout(() => {
+              infrastructure.classList.add('emphasized');
+            }, 1200);
+          }, currentDelay);
+          currentDelay += staggerDelay;
+        }
+
+        // E) Paragraph lines
+        const paragraphLines = document.querySelectorAll('.hero-paragraph-line');
+        if (paragraphLines.length) {
+          const lineStagger = 200; // ms between lines (slower)
+          paragraphLines.forEach((line, index) => {
+            setTimeout(() => {
+              line.classList.add('revealed');
+            }, currentDelay + (index * lineStagger));
+          });
+        }
+        }
       })();
     </script>
   </body>
