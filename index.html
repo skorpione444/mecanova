@@ -109,17 +109,27 @@
         position: absolute;
         top: 0;
         left: 0;
+        background-color: #000000; /* Black background */
       }
       
       #mapbox-globe .mapboxgl-canvas {
         position: absolute;
+        opacity: 0;
+        transition: opacity 2s ease-in-out; /* Slow fade-in transition */
       }
       
-      .mecanova-glow {
+      #mapbox-globe .mapboxgl-canvas.fade-in {
+        opacity: 1;
+      }
+      
+      
+      .hero-text-enhanced {
         text-shadow: 
-          0 0 10px rgba(236, 223, 204, 0.3),
-          0 0 20px rgba(236, 223, 204, 0.2),
-          0 0 30px rgba(236, 223, 204, 0.1);
+          0 0 6px rgba(0, 0, 0, 0.9),
+          0 0 12px rgba(0, 0, 0, 0.7),
+          0 2px 4px rgba(0, 0, 0, 0.8);
+        -webkit-text-stroke: 0.5px rgba(0, 0, 0, 0.4);
+        text-stroke: 0.5px rgba(0, 0, 0, 0.4);
       }
       
       @keyframes heartbeat {
@@ -280,22 +290,19 @@
         .pillar { padding-left: 1.25rem; padding-right: 1.25rem; padding-top: 1.25rem; padding-bottom: 1.25rem; }
       }
 
-      /* Hero text animations */
+      /* Hero text animations - synchronized with map fade-in */
       .hero-text-item {
         opacity: 0;
-        transform: translateY(8px);
-        transition: opacity 1000ms cubic-bezier(0.22, 1, 0.36, 1),
-                    transform 1000ms cubic-bezier(0.22, 1, 0.36, 1);
+        transition: opacity 2s ease-in-out; /* Same speed and timing as map */
       }
       .hero-text-item.revealed {
         opacity: 1;
-        transform: translateY(0);
       }
       
       /* MECANOVA letter-spacing animation */
       .hero-mecanova {
         letter-spacing: 0.21em !important; /* 0.15em + 0.06em */
-        transition: letter-spacing 1400ms ease-out;
+        transition: letter-spacing 2s ease-in-out; /* Same speed as map */
       }
       .hero-mecanova.letter-spacing-complete {
         letter-spacing: 0.15em !important; /* original value */
@@ -303,34 +310,48 @@
       
       /* Divider line animation */
       .hero-divider {
-        transform: scaleX(0);
-        transform-origin: center;
-        transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+        opacity: 0;
+        transition: opacity 2s ease-in-out; /* Same speed as map */
       }
       .hero-divider.drawn {
-        transform: scaleX(1);
+        opacity: 1;
       }
       
       /* Soft emphasis on Import | Distribution | Infrastructure */
       .hero-emphasis {
-        opacity: 0.75;
-        transition: opacity 800ms ease-out;
+        opacity: 0;
+        transition: opacity 2s ease-in-out; /* Same speed as map */
       }
       .hero-emphasis.emphasized {
+        opacity: 1;
+      }
+      
+      /* Hero lines (left and right of Import | Distribution | Infrastructure) */
+      .hero-line {
+        opacity: 0;
+        transition: opacity 2s ease-in-out; /* Same speed and timing as hero text */
+      }
+      .hero-line.revealed {
         opacity: 1;
       }
       
       /* Paragraph line blocks */
       .hero-paragraph-line {
         opacity: 0;
-        transform: translateY(6px);
-        transition: opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
-                    transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+        transition: opacity 2s ease-in-out; /* Same speed as map */
         display: inline-block;
       }
       .hero-paragraph-line.revealed {
         opacity: 1;
-        transform: translateY(0);
+      }
+      
+      /* Hero check items - slower fade-in after hero text */
+      .hero-check-item {
+        opacity: 0;
+        transition: opacity 4s ease-in-out; /* Slower fade-in */
+      }
+      .hero-check-item.revealed {
+        opacity: 1;
       }
 
       /* Reduced motion: remove transitions and show immediately */
@@ -345,9 +366,9 @@
           transition: none !important;
         }
         .hero-text-item,
-        .hero-paragraph-line {
+        .hero-paragraph-line,
+        .hero-line {
           opacity: 1 !important;
-          transform: none !important;
           transition: none !important;
         }
         .hero-mecanova {
@@ -355,13 +376,29 @@
           transition: none !important;
         }
         .hero-divider {
-          transform: scaleX(1) !important;
+          opacity: 1 !important;
           transition: none !important;
         }
         .hero-emphasis {
           opacity: 1 !important;
           transition: none !important;
         }
+        .hero-check-item {
+          opacity: 1 !important;
+          transition: none !important;
+        }
+        #mapbox-globe .mapboxgl-canvas {
+          opacity: 1 !important;
+          transition: none !important;
+        }
+        .mecanova-mouse-gravitate {
+          transition: none !important;
+        }
+      }
+      
+      .mecanova-mouse-gravitate {
+        will-change: transform;
+        transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       }
     </style>
   </head>
@@ -405,7 +442,8 @@
         <div
           class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#2a2a2a] via-background/80 to-background/90 opacity-60 z-[1]"
         ></div>
-        <div class="absolute bottom-0 left-0 w-32 h-12 bg-black z-[2]"></div>
+        <div class="absolute inset-0 bg-black/25 z-[2]"></div>
+        <div class="absolute bottom-0 left-0 w-32 h-12 bg-black z-[3]"></div>
         <div class="relative z-10 max-w-4xl mx-auto space-y-10 animate-fade-in">
           <div class="hero-text-item" id="hero-est">
             <span
@@ -416,33 +454,37 @@
             </span>
           </div>
           <h1 class="flex flex-col items-center gap-2">
-            <span class="hero-text-item hero-mecanova text-5xl md:text-6xl lg:text-7xl font-avant-garde font-light uppercase text-primary mecanova-glow mecanova-heartbeat" id="hero-mecanova">
+            <span class="hero-text-item hero-mecanova text-5xl md:text-6xl lg:text-9xl font-avant-garde font-extralight uppercase text-primary tracking-wide" id="hero-mecanova">
               MECANOVA
             </span>
-            <div class="flex flex-col items-center gap-6">
-              <span class="hero-text-item text-2xl md:text-3xl lg:text-4xl font-heading font-light text-muted-foreground italic font-serif mt-2 bg-black/40 px-4 py-2 rounded-sm inline-block" id="hero-premium">
-                Premium Agave Spirits
-              </span>
-              <span class="hero-text-item hero-emphasis text-xl md:text-2xl lg:text-3xl font-heading font-light text-muted-foreground font-serif bg-black/40 px-4 py-2 rounded-sm inline-block tracking-wide" id="hero-infrastructure">
-                Import | Distribution | Infrastructure
+            <div class="flex flex-col items-center gap-2">
+              <div class="flex items-center gap-4 mt-2">
+                <div class="hero-line hidden md:block w-12 h-[1px] bg-[#ecdfcc]/30"></div>
+                <span class="hero-text-item hero-text-enhanced text-4xl font-serif italic text-[#ecdfcc]/90 bg-black/40 px-4 py-2 rounded-sm inline-block" id="hero-premium">
+                  Premium Agave Spirits
+                </span>
+                <div class="hero-line hidden md:block w-12 h-[1px] bg-[#ecdfcc]/30"></div>
+              </div>
+              <span class="hero-text-item hero-emphasis hero-text-enhanced text-base md:text-lg lg:text-xl font-heading font-light text-[#ecdfcc] bg-black/40 px-4 py-2 rounded-sm inline-block tracking-widest uppercase" id="hero-infrastructure">
+                Import <span class="text-[#ecdfcc] mx-3">•</span> Distribution <span class="text-[#ecdfcc] mx-3">•</span> Infrastructure
               </span>
             </div>
           </h1>
-          <p class="text-xl lg:text-2xl text-muted-foreground leading-relaxed max-w-2xl mx-auto bg-black/40 px-6 py-3 rounded-sm inline-block" id="hero-paragraph">
+          <p class="hero-text-enhanced text-xl lg:text-2xl text-muted-foreground leading-relaxed max-w-2xl mx-auto bg-black/40 px-6 py-3 rounded-sm inline-block" id="hero-paragraph">
             <span class="hero-paragraph-line">We connect exceptional agave spirits with European partners through compliant import execution,</span>
             <span class="hero-paragraph-line"> dependable logistics, and a long-term B2B focus.</span>
           </p>
           <div class="space-y-3 text-left max-w-xl mx-auto pt-4">
-            <div class="flex items-start gap-3 bg-black/40 px-4 py-2 rounded-sm">
+            <div class="flex items-start gap-3 bg-black/40 px-4 py-2 rounded-sm hero-check-item hero-text-enhanced" id="hero-check-1">
               <iconify-icon icon="solar:check-circle-bold" class="size-5 text-primary mt-1 flex-shrink-0"></iconify-icon>
               <p class="text-muted-foreground text-base lg:text-lg">Germany-based importer built for retail, hospitality, and wholesale partners</p>
             </div>
-            <div class="flex items-start gap-3 bg-black/40 px-4 py-2 rounded-sm">
+            <div class="flex items-start gap-3 bg-black/40 px-4 py-2 rounded-sm hero-check-item hero-text-enhanced" id="hero-check-2">
               <iconify-icon icon="solar:check-circle-bold" class="size-5 text-primary mt-1 flex-shrink-0"></iconify-icon>
               <p class="text-muted-foreground text-base lg:text-lg">Compliance-first: labeling, documentation, and traceability handled properly</p>
             </div>
           </div>
-          <div class="pt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div class="pt-10 flex flex-col sm:flex-row gap-8 justify-center items-center mb-10">
             <button
               class="border border-primary text-primary px-12 py-5 uppercase tracking-widest text-sm hover:bg-primary hover:text-background hover:border-primary transition-all duration-300 w-full sm:w-auto"
             >
@@ -455,11 +497,16 @@
             </button>
           </div>
         </div>
-        <div class="absolute bottom-12 left-1/2 -translate-x-1/2 animate-bounce">
-          <iconify-icon
-            icon="solar:arrow-down-linear"
-            class="size-8 text-muted-foreground opacity-50"
-          ></iconify-icon>
+        <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+          <span class="text-xs uppercase tracking-widest text-muted-foreground opacity-50">SCROLL</span>
+          <div class="w-px h-8 bg-muted-foreground/30"></div>
+        </div>
+        <div class="fixed left-6 md:left-12 top-1/2 -translate-y-1/2 hidden lg:block z-[100]">
+          <div class="flex flex-col gap-6 items-center">
+            <div class="w-[1px] h-24 bg-[#ecdfcc]/20"></div>
+            <span class="text-[10px] tracking-[0.3em] text-[#ecdfcc]/40 uppercase font-heading" style="writing-mode: vertical-rl; transform: rotate(180deg);">MECANOVA UG (HAFTUNGSBESCHRÄNKT)</span>
+            <div class="w-[1px] h-24 bg-[#ecdfcc]/20"></div>
+          </div>
         </div>
       </section>
       <section id="portfolio" class="py-28 px-8 lg:px-12 bg-card/30 relative overflow-hidden">
@@ -658,7 +705,7 @@
           </div>
         </div>
       </section>
-      <section id="contact" class="py-28 px-8 lg:px-12 border-t border-border" style="background-color: #0b0c0a;">
+      <section id="contact" class="py-28 px-8 lg:px-12 bg-card border-t border-border">
         <div class="max-w-5xl mx-auto">
           <div class="mb-12 text-center">
             <h2 class="text-4xl lg:text-5xl font-heading font-light mb-6">Partnership Inquiries</h2>
@@ -689,13 +736,13 @@
                 required
               />
             </div>
-              <div class="space-y-2">
+            <div class="space-y-2">
               <label class="text-xs uppercase tracking-widest text-muted-foreground ml-1"
                 >Email Address</label
               ><input
                 type="email"
                 class="w-full bg-input border-b border-border focus:border-primary text-foreground px-4 py-4 outline-none transition-colors rounded-none placeholder:text-muted-foreground/30 text-lg"
-                placeholder="don@example.com"
+                placeholder="sebastian@example.com"
                 required
               />
             </div>
@@ -750,23 +797,16 @@
     <script>
       // Mapbox Globe Background
       (function() {
-        // Get token from config.js (local dev) or use production fallback
-        // Note: config.js is gitignored for local development flexibility
-        const accessToken = window.MAPBOX_TOKEN || 'pk.eyJ1Ijoic2tvcnBpb25lIiwiYSI6ImNtaG94bDIybzBjNTAybHNhbDZkMWo1NDgifQ.P62PnwH5UIviRlL0gqxsWA';
+        // Get token from config.js or use fallback
+        const accessToken = window.MAPBOX_TOKEN || 'pk.eyJ1Ijoic2tvcnBpb25lNDQ0IiwiYSI6ImNtaG94dHpleTAwMXYwMXNlaG0xZjlleXIifQ.YourTokenHere';
         
-        if (!accessToken) {
-          console.error('❌ Mapbox token is missing. The map will not render.');
-          console.error('   For local development: Create config.js with window.MAPBOX_TOKEN = "your-token"');
+        console.log('Mapbox token check:', accessToken ? 'Token found' : 'No token');
+        
+        if (!accessToken || accessToken.includes('YourTokenHere')) {
+          console.warn('Mapbox token not set. Please add your token to config.js file.');
           return;
         }
         
-        if (accessToken.includes('YourTokenHere') || accessToken.length < 50) {
-          console.error('❌ Mapbox token appears to be invalid or placeholder.');
-          console.error('   Token value:', accessToken.substring(0, 20) + '...');
-          return;
-        }
-        
-        console.log('✓ Mapbox token loaded successfully');
         mapboxgl.accessToken = accessToken;
         
         const mapContainer = document.getElementById('mapbox-globe');
@@ -811,6 +851,17 @@
             map.touchZoomRotate.disable();
             map.boxZoom.disable();
             map.keyboard.disable();
+            
+            // Fade in the map canvas and hero text together
+            const canvas = mapContainer.querySelector('.mapboxgl-canvas');
+            if (canvas) {
+              // Small delay to ensure map is fully rendered
+              setTimeout(() => {
+                canvas.classList.add('fade-in');
+                // Trigger hero text fade-in at the same time
+                triggerHeroFadeIn();
+              }, 100);
+            }
             
             // Continuous rotation animation - move center around the globe
             // Starting from Mexico, rotating right shows: Mexico → Atlantic → Europe → Asia → Pacific → back to Mexico
@@ -913,24 +964,10 @@
           });
           
           map.on('error', (e) => {
-            console.error('❌ Mapbox map error:', e.error);
-            if (e.error && e.error.message) {
-              console.error('   Error details:', e.error.message);
-              if (e.error.message.includes('token') || e.error.message.includes('Token')) {
-                console.error('   This may be a token authentication issue. Check your Mapbox token.');
-              }
-            }
+            console.error('Mapbox error:', e.error);
           });
         } catch (error) {
-          console.error('❌ Failed to initialize Mapbox globe:', error);
-          if (error.message) {
-            console.error('   Error message:', error.message);
-          }
-          // Show user-visible error if possible
-          const mapContainer = document.getElementById('mapbox-globe');
-          if (mapContainer) {
-            mapContainer.style.display = 'none';
-          }
+          console.error('Failed to initialize Mapbox globe:', error);
         }
       })();
     </script>
@@ -1113,99 +1150,208 @@
       })();
     </script>
     <script>
-      // Hero text animations
+      // Hero text animations - synchronized with map fade-in
       (function() {
-        // Wait for DOM to be ready
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', initHeroAnimations);
-        } else {
-          initHeroAnimations();
-        }
-        
-        function initHeroAnimations() {
         // Check for reduced motion preference
         const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         
-        if (prefersReduced) {
-          // Show everything immediately
-          document.querySelectorAll('.hero-text-item, .hero-paragraph-line').forEach(el => {
-            el.classList.add('revealed');
-          });
-          const divider = document.querySelector('.hero-divider');
-          if (divider) divider.classList.add('drawn');
-          const mecanova = document.querySelector('#hero-mecanova');
-          if (mecanova) mecanova.classList.add('letter-spacing-complete');
-          const emphasis = document.querySelector('.hero-emphasis');
-          if (emphasis) emphasis.classList.add('emphasized');
-          return;
-        }
+        // Global function to trigger hero fade-in (called from map load event)
+        window.triggerHeroFadeIn = function() {
+          if (prefersReduced) {
+            // Show everything immediately
+            document.querySelectorAll('.hero-text-item, .hero-paragraph-line, .hero-check-item, .hero-line').forEach(el => {
+              el.classList.add('revealed');
+            });
+            const divider = document.querySelector('.hero-divider');
+            if (divider) divider.classList.add('drawn');
+            const mecanova = document.querySelector('#hero-mecanova');
+            if (mecanova) mecanova.classList.add('letter-spacing-complete');
+            const emphasis = document.querySelector('.hero-emphasis');
+            if (emphasis) emphasis.classList.add('emphasized');
+            return;
+          }
 
-        // Animation sequence - wait for page to be ready
-        const initialDelay = 300; // Wait 300ms after page load
-        const staggerDelay = 450; // ms between items (slower, more visible)
-        let currentDelay = initialDelay;
-
-        // A) EST. 2024
-        const estElement = document.getElementById('hero-est');
-        if (estElement) {
-          setTimeout(() => {
+          // Fade in all hero elements together with the map (same timing)
+          const estElement = document.getElementById('hero-est');
+          if (estElement) {
             estElement.classList.add('revealed');
-            // Divider animation: 500ms after EST. 2024 appears
             const divider = estElement.querySelector('.hero-divider');
-            if (divider) {
-              setTimeout(() => {
-                divider.classList.add('drawn');
-              }, 500);
-            }
-          }, currentDelay);
-          currentDelay += staggerDelay;
-        }
+            if (divider) divider.classList.add('drawn');
+          }
 
-        // B) MECANOVA
-        const mecanova = document.getElementById('hero-mecanova');
-        if (mecanova) {
-          setTimeout(() => {
+          const mecanova = document.getElementById('hero-mecanova');
+          if (mecanova) {
             mecanova.classList.add('revealed');
-            // Letter-spacing animation starts concurrently after MECANOVA appears
-            // Start immediately when reveal begins (runs concurrently)
             mecanova.classList.add('letter-spacing-complete');
-          }, currentDelay);
-          currentDelay += staggerDelay;
-        }
+          }
 
-        // C) Premium Agave Spirits
-        const premium = document.getElementById('hero-premium');
-        if (premium) {
-          setTimeout(() => {
+          const premium = document.getElementById('hero-premium');
+          if (premium) {
             premium.classList.add('revealed');
-          }, currentDelay);
-          currentDelay += staggerDelay;
-        }
+          }
 
-        // D) Import | Distribution | Infrastructure
-        const infrastructure = document.getElementById('hero-infrastructure');
-        if (infrastructure) {
-          setTimeout(() => {
+          const infrastructure = document.getElementById('hero-infrastructure');
+          if (infrastructure) {
             infrastructure.classList.add('revealed');
-            // Soft emphasis: 1200ms after line becomes visible
-            setTimeout(() => {
-              infrastructure.classList.add('emphasized');
-            }, 1200);
-          }, currentDelay);
-          currentDelay += staggerDelay;
-        }
+            infrastructure.classList.add('emphasized');
+          }
+          
+          // Fade in the lines at the same time as the infrastructure text
+          const heroLines = document.querySelectorAll('.hero-line');
+          heroLines.forEach(line => {
+            line.classList.add('revealed');
+          });
 
-        // E) Paragraph lines
-        const paragraphLines = document.querySelectorAll('.hero-paragraph-line');
-        if (paragraphLines.length) {
-          const lineStagger = 200; // ms between lines (slower)
-          paragraphLines.forEach((line, index) => {
+          const paragraphLines = document.querySelectorAll('.hero-paragraph-line');
+          paragraphLines.forEach(line => {
+            line.classList.add('revealed');
+          });
+          
+          // Trigger check items sequentially after hero text finishes
+          // Hero text takes 2s to fade in, so start first check item after 2s
+          const heroCheck1 = document.getElementById('hero-check-1');
+          if (heroCheck1 && !prefersReduced) {
             setTimeout(() => {
-              line.classList.add('revealed');
-            }, currentDelay + (index * lineStagger));
+              heroCheck1.classList.add('revealed');
+              
+              // Start second check item when first one is halfway through (2s into its 4s fade)
+              const heroCheck2 = document.getElementById('hero-check-2');
+              if (heroCheck2) {
+                setTimeout(() => {
+                  heroCheck2.classList.add('revealed');
+                }, 2000); // Start when first check item is halfway through (2s into 4s fade)
+              }
+            }, 2000); // Wait for hero text to finish (2s)
+          } else if (prefersReduced) {
+            // Show check items immediately if reduced motion
+            document.querySelectorAll('.hero-check-item').forEach(el => {
+              el.classList.add('revealed');
+            });
+          }
+        };
+
+        // Fallback: if map doesn't load within 5 seconds, trigger hero fade-in anyway
+        setTimeout(() => {
+          if (typeof window.triggerHeroFadeIn === 'function' && !document.querySelector('#mapbox-globe .mapboxgl-canvas.fade-in')) {
+            console.log('Map load timeout - triggering hero fade-in');
+            window.triggerHeroFadeIn();
+          }
+        }, 5000);
+      })();
+    </script>
+    <script>
+      // Mouse gravitation effect for MECANOVA text
+      (function() {
+        // Check for reduced motion preference
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReduced) return; // Skip effect if user prefers reduced motion
+        
+        const mecanovaText = document.getElementById('hero-mecanova');
+        const heroSection = document.querySelector('section.relative.pt-40'); // The hero section
+        
+        if (!mecanovaText || !heroSection) return;
+        
+        // Add the gravitate class
+        mecanovaText.classList.add('mecanova-mouse-gravitate');
+        
+        let currentX = 0;
+        let currentY = 0;
+        let targetX = 0;
+        let targetY = 0;
+        let isMouseInSection = false;
+        
+        // Maximum offset distance (in pixels)
+        const maxOffset = 6;
+        
+        // Smooth interpolation factor (0-1, lower = smoother but slower)
+        const lerpFactor = 0.15;
+        
+        function lerp(start, end, factor) {
+          return start + (end - start) * factor;
+        }
+        
+        function updatePosition() {
+          // Smooth interpolation
+          currentX = lerp(currentX, targetX, lerpFactor);
+          currentY = lerp(currentY, targetY, lerpFactor);
+          
+          // Apply transform
+          mecanovaText.style.transform = `translate(${currentX}px, ${currentY}px)`;
+          
+          // Continue animation if mouse is in section
+          if (isMouseInSection) {
+            requestAnimationFrame(updatePosition);
+          }
+        }
+        
+        function handleMouseMove(e) {
+          if (!isMouseInSection) {
+            isMouseInSection = true;
+            requestAnimationFrame(updatePosition);
+          }
+          
+          // Get mouse position
+          const mouseX = e.clientX;
+          const mouseY = e.clientY;
+          
+          // Get element center position
+          const rect = mecanovaText.getBoundingClientRect();
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          
+          // Calculate direction vector from center to mouse
+          const deltaX = mouseX - centerX;
+          const deltaY = mouseY - centerY;
+          
+          // Calculate distance
+          const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+          
+          // Normalize and scale (with distance-based falloff for more natural feel)
+          const normalizedDistance = Math.min(distance / 200, 1); // Normalize to 0-1 over 200px
+          const scale = maxOffset * normalizedDistance;
+          
+          // Calculate target offset
+          if (distance > 0) {
+            targetX = (deltaX / distance) * scale;
+            targetY = (deltaY / distance) * scale;
+          } else {
+            targetX = 0;
+            targetY = 0;
+          }
+        }
+        
+        function handleMouseLeave() {
+          isMouseInSection = false;
+          targetX = 0;
+          targetY = 0;
+          // Continue animation to smoothly return to center
+          requestAnimationFrame(function animate() {
+            currentX = lerp(currentX, 0, lerpFactor);
+            currentY = lerp(currentY, 0, lerpFactor);
+            mecanovaText.style.transform = `translate(${currentX}px, ${currentY}px)`;
+            
+            // Continue until close enough to center
+            if (Math.abs(currentX) > 0.1 || Math.abs(currentY) > 0.1) {
+              requestAnimationFrame(animate);
+            } else {
+              // Reset to exact center
+              currentX = 0;
+              currentY = 0;
+              mecanovaText.style.transform = 'translate(0, 0)';
+            }
           });
         }
-        }
+        
+        // Add event listeners to hero section
+        heroSection.addEventListener('mousemove', handleMouseMove);
+        heroSection.addEventListener('mouseleave', handleMouseLeave);
+        
+        // Also handle when mouse leaves the viewport
+        document.addEventListener('mouseout', function(e) {
+          if (!e.relatedTarget && !e.toElement) {
+            handleMouseLeave();
+          }
+        });
       })();
     </script>
   </body>
