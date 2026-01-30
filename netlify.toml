@@ -1,0 +1,11 @@
+[build]
+  # Build command to generate config.js from environment variables
+  command = "node build-config.js"
+  # Publish directory (root directory for static site)
+  publish = "."
+
+# Environment variables are set in Netlify dashboard:
+# Site settings > Environment variables > Add variable
+# Variable name: MAPBOX_TOKEN
+# Variable value: your_mapbox_token_here
+

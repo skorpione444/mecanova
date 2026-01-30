@@ -802,8 +802,9 @@
         
         console.log('Mapbox token check:', accessToken ? 'Token found' : 'No token');
         
-        if (!accessToken || accessToken.includes('YourTokenHere')) {
-          console.warn('Mapbox token not set. Please add your token to config.js file.');
+        if (!accessToken || accessToken.includes('YourTokenHere') || accessToken.trim() === '') {
+          console.warn('Mapbox token not set. Please add your MAPBOX_TOKEN environment variable in Netlify site settings.');
+          console.warn('Site settings > Environment variables > Add variable: MAPBOX_TOKEN');
           return;
         }
         
