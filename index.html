@@ -631,16 +631,23 @@
     <script>
       // Mapbox Globe Background
       (function() {
-        // Get token from config.js or use fallback
-        const accessToken = window.MAPBOX_TOKEN || 'pk.eyJ1Ijoic2tvcnBpb25lNDQ0IiwiYSI6ImNtaG94dHpleTAwMXYwMXNlaG0xZjlleXIifQ.YourTokenHere';
+        // Get token from config.js (local dev) or use production fallback
+        // Note: config.js is gitignored for local development flexibility
+        const accessToken = window.MAPBOX_TOKEN || 'pk.eyJ1Ijoic2tvcnBpb25lIiwiYSI6ImNtaG94bDIybzBjNTAybHNhbDZkMWo1NDgifQ.P62PnwH5UIviRlL0gqxsWA';
         
-        console.log('Mapbox token check:', accessToken ? 'Token found' : 'No token');
-        
-        if (!accessToken || accessToken.includes('YourTokenHere')) {
-          console.warn('Mapbox token not set. Please add your token to config.js file.');
+        if (!accessToken) {
+          console.error('❌ Mapbox token is missing. The map will not render.');
+          console.error('   For local development: Create config.js with window.MAPBOX_TOKEN = "your-token"');
           return;
         }
         
+        if (accessToken.includes('YourTokenHere') || accessToken.length < 50) {
+          console.error('❌ Mapbox token appears to be invalid or placeholder.');
+          console.error('   Token value:', accessToken.substring(0, 20) + '...');
+          return;
+        }
+        
+        console.log('✓ Mapbox token loaded successfully');
         mapboxgl.accessToken = accessToken;
         
         const mapContainer = document.getElementById('mapbox-globe');
@@ -787,10 +794,24 @@
           });
           
           map.on('error', (e) => {
-            console.error('Mapbox error:', e.error);
+            console.error('❌ Mapbox map error:', e.error);
+            if (e.error && e.error.message) {
+              console.error('   Error details:', e.error.message);
+              if (e.error.message.includes('token') || e.error.message.includes('Token')) {
+                console.error('   This may be a token authentication issue. Check your Mapbox token.');
+              }
+            }
           });
         } catch (error) {
-          console.error('Failed to initialize Mapbox globe:', error);
+          console.error('❌ Failed to initialize Mapbox globe:', error);
+          if (error.message) {
+            console.error('   Error message:', error.message);
+          }
+          // Show user-visible error if possible
+          const mapContainer = document.getElementById('mapbox-globe');
+          if (mapContainer) {
+            mapContainer.style.display = 'none';
+          }
         }
       })();
     </script>
