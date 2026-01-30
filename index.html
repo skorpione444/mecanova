@@ -31,7 +31,7 @@
     <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.16.0/mapbox-gl.js"></script>
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.16.0/mapbox-gl.css" rel="stylesheet" />
-    <script src="config.js"></script>
+    <script src="config.js" onerror="console.error('Failed to load config.js - Mapbox token may not be configured')"></script>
     <style type="text/tailwindcss">
 
       @theme inline {
@@ -797,29 +797,46 @@
     <script>
       // Mapbox Globe Background
       (function() {
-        // Get token from config.js or use fallback
-        const accessToken = window.MAPBOX_TOKEN || 'pk.eyJ1Ijoic2tvcnBpb25lNDQ0IiwiYSI6ImNtaG94dHpleTAwMXYwMXNlaG0xZjlleXIifQ.YourTokenHere';
+        // Wait a bit for config.js to load if it's still loading
+        // Get token from config.js
+        let accessToken = window.MAPBOX_TOKEN;
         
-        console.log('Mapbox token check:', accessToken ? 'Token found' : 'No token');
-        
-        if (!accessToken || accessToken.includes('YourTokenHere') || accessToken.trim() === '') {
-          console.warn('Mapbox token not set. Please add your MAPBOX_TOKEN environment variable in Netlify site settings.');
-          console.warn('Site settings > Environment variables > Add variable: MAPBOX_TOKEN');
+        // If token not immediately available, wait a moment for config.js to load
+        if (!accessToken) {
+          setTimeout(function() {
+            accessToken = window.MAPBOX_TOKEN;
+            if (accessToken && accessToken.trim() !== '' && !accessToken.includes('YourTokenHere')) {
+              initializeMapbox(accessToken);
+            }
+          }, 100);
           return;
         }
         
-        mapboxgl.accessToken = accessToken;
+        initializeMapbox(accessToken);
         
-        const mapContainer = document.getElementById('mapbox-globe');
-        if (!mapContainer) {
-          console.error('Mapbox container #mapbox-globe not found');
-          return;
-        }
-        
-        console.log('Initializing Mapbox globe...');
-        
-        try {
-          const map = new mapboxgl.Map({
+        function initializeMapbox(token) {
+          console.log('Mapbox token check:', token ? 'Token found' : 'No token');
+          console.log('Token value:', token ? token.substring(0, 20) + '...' : 'undefined');
+          
+          if (!token || token.includes('YourTokenHere') || token.trim() === '') {
+            console.warn('Mapbox token not set. Please add your MAPBOX_TOKEN environment variable in Netlify site settings.');
+            console.warn('Site settings > Environment variables > Add variable: MAPBOX_TOKEN');
+            console.warn('After adding the variable, trigger a new deployment in Netlify.');
+            return;
+          }
+          
+          mapboxgl.accessToken = token;
+          
+          const mapContainer = document.getElementById('mapbox-globe');
+          if (!mapContainer) {
+            console.error('Mapbox container #mapbox-globe not found');
+            return;
+          }
+          
+          console.log('Initializing Mapbox globe...');
+          
+          try {
+            const map = new mapboxgl.Map({
             container: 'mapbox-globe',
             style: 'mapbox://styles/skorpione/cmkwwfxby001501skf18f5m9h',
             center: [-99, 23], // Start centered on Mexico (longitude, latitude)
@@ -831,144 +848,145 @@
             attributionControl: false, // Hide attribution for cleaner look
           });
           
-          console.log('Mapbox map created, waiting for load...');
-          
-          map.on('load', () => {
-            console.log('Mapbox map loaded');
-            // Darken the background significantly
-            map.setFog({
-              color: 'rgba(0, 0, 0, 0.98)', // Much darker background
-              'horizon-blend': 0.05,
-              'high-color': '#000000', // Pure black
-              'space-color': '#000000', // Pure black
-              'star-intensity': 0,
-            });
+            console.log('Mapbox map created, waiting for load...');
             
-            // Disable all map controls and interactions
-            map.dragPan.disable();
-            map.dragRotate.disable();
-            map.scrollZoom.disable();
-            map.doubleClickZoom.disable();
-            map.touchZoomRotate.disable();
-            map.boxZoom.disable();
-            map.keyboard.disable();
-            
-            // Fade in the map canvas and hero text together
-            const canvas = mapContainer.querySelector('.mapboxgl-canvas');
-            if (canvas) {
-              // Small delay to ensure map is fully rendered
-              setTimeout(() => {
-                canvas.classList.add('fade-in');
-                // Trigger hero text fade-in at the same time
-                triggerHeroFadeIn();
-              }, 100);
-            }
-            
-            // Continuous rotation animation - move center around the globe
-            // Starting from Mexico, rotating right shows: Mexico → Atlantic → Europe → Asia → Pacific → back to Mexico
-            let longitude = -99; // Start at Mexico's longitude
-            const baseLatitude = 23; // Mexico's latitude
-            
-            function rotateGlobe() {
-              // Move longitude eastward (right rotation) to show different continents
-              longitude += 0.1; // Move east (which appears as right rotation)
+            map.on('load', () => {
+              console.log('Mapbox map loaded');
+              // Darken the background significantly
+              map.setFog({
+                color: 'rgba(0, 0, 0, 0.98)', // Much darker background
+                'horizon-blend': 0.05,
+                'high-color': '#000000', // Pure black
+                'space-color': '#000000', // Pure black
+                'star-intensity': 0,
+              });
               
-              // Wrap around when we complete a full circle
-              if (longitude >= 180) {
-                longitude = -180;
+              // Disable all map controls and interactions
+              map.dragPan.disable();
+              map.dragRotate.disable();
+              map.scrollZoom.disable();
+              map.doubleClickZoom.disable();
+              map.touchZoomRotate.disable();
+              map.boxZoom.disable();
+              map.keyboard.disable();
+              
+              // Fade in the map canvas and hero text together
+              const canvas = mapContainer.querySelector('.mapboxgl-canvas');
+              if (canvas) {
+                // Small delay to ensure map is fully rendered
+                setTimeout(() => {
+                  canvas.classList.add('fade-in');
+                  // Trigger hero text fade-in at the same time
+                  triggerHeroFadeIn();
+                }, 100);
               }
               
-              // Update the center to show different parts of the world
-              map.setCenter([longitude, baseLatitude]);
+              // Continuous rotation animation - move center around the globe
+              // Starting from Mexico, rotating right shows: Mexico → Atlantic → Europe → Asia → Pacific → back to Mexico
+              let longitude = -99; // Start at Mexico's longitude
+              const baseLatitude = 23; // Mexico's latitude
               
-              requestAnimationFrame(rotateGlobe);
-            }
-            rotateGlobe();
-            console.log('Mapbox globe rotation started');
-          });
-          
-          map.on('style.load', () => {
-            console.log('Mapbox style loaded, hiding labels and updating borders...');
-            const layers = map.getStyle().layers;
-            const mecanovaBeige = '#ecdfcc'; // Mecanova brand beige color
-
-            layers.forEach(layer => {
-              // Hide labels
-              if (
-                layer.type === 'symbol' &&
-                (
-                  layer.id.includes('label') ||
-                  layer.id.includes('place') ||
-                  layer.id.includes('country')
-                )
-              ) {
-                map.setLayoutProperty(layer.id, 'visibility', 'none');
-              }
-              
-              // Update border colors to Mecanova beige with varying intensities
-              if (
-                layer.type === 'line' &&
-                (
-                  layer.id.includes('boundary') ||
-                  layer.id.includes('border') ||
-                  layer.id.includes('admin')
-                )
-              ) {
-                try {
-                  // Different border intensities based on layer type
-                  let borderColor = mecanovaBeige;
-                  let borderOpacity = 0.3;
-                  let borderWidth = 0.5;
-                  
-                  // Major country boundaries - more visible
-                  if (layer.id.includes('admin-0') || layer.id.includes('country')) {
-                    borderOpacity = 0.5;
-                    borderWidth = 0.8;
-                  }
-                  // State/province boundaries - medium visibility
-                  else if (layer.id.includes('admin-1') || layer.id.includes('state')) {
-                    borderOpacity = 0.35;
-                    borderWidth = 0.6;
-                  }
-                  // Background/buffer borders - subtle
-                  else if (layer.id.includes('bg') || layer.id.includes('buffer')) {
-                    borderOpacity = 0.15;
-                    borderWidth = 1.0;
-                  }
-                  // Other boundaries - default
-                  else {
-                    borderOpacity = 0.25;
-                    borderWidth = 0.5;
-                  }
-                  
-                  // Apply border color and opacity
-                  if (map.getPaintProperty(layer.id, 'line-color')) {
-                    map.setPaintProperty(layer.id, 'line-color', borderColor);
-                  }
-                  if (map.getPaintProperty(layer.id, 'line-opacity')) {
-                    map.setPaintProperty(layer.id, 'line-opacity', borderOpacity);
-                  } else {
-                    // If opacity property doesn't exist, set color with opacity
-                    const beigeWithOpacity = mecanovaBeige + Math.floor(borderOpacity * 255).toString(16).padStart(2, '0');
-                    map.setPaintProperty(layer.id, 'line-color', beigeWithOpacity);
-                  }
-                  if (map.getPaintProperty(layer.id, 'line-width')) {
-                    map.setPaintProperty(layer.id, 'line-width', borderWidth);
-                  }
-                } catch (e) {
-                  console.warn(`Could not update border layer ${layer.id}:`, e);
+              function rotateGlobe() {
+                // Move longitude eastward (right rotation) to show different continents
+                longitude += 0.1; // Move east (which appears as right rotation)
+                
+                // Wrap around when we complete a full circle
+                if (longitude >= 180) {
+                  longitude = -180;
                 }
+                
+                // Update the center to show different parts of the world
+                map.setCenter([longitude, baseLatitude]);
+                
+                requestAnimationFrame(rotateGlobe);
               }
+              rotateGlobe();
+              console.log('Mapbox globe rotation started');
             });
             
-            console.log('Borders updated to Mecanova beige');
-          });
-          
-          map.on('error', (e) => {
-            console.error('Mapbox error:', e.error);
-          });
-        } catch (error) {
-          console.error('Failed to initialize Mapbox globe:', error);
+            map.on('style.load', () => {
+              console.log('Mapbox style loaded, hiding labels and updating borders...');
+              const layers = map.getStyle().layers;
+              const mecanovaBeige = '#ecdfcc'; // Mecanova brand beige color
+
+              layers.forEach(layer => {
+                // Hide labels
+                if (
+                  layer.type === 'symbol' &&
+                  (
+                    layer.id.includes('label') ||
+                    layer.id.includes('place') ||
+                    layer.id.includes('country')
+                  )
+                ) {
+                  map.setLayoutProperty(layer.id, 'visibility', 'none');
+                }
+                
+                // Update border colors to Mecanova beige with varying intensities
+                if (
+                  layer.type === 'line' &&
+                  (
+                    layer.id.includes('boundary') ||
+                    layer.id.includes('border') ||
+                    layer.id.includes('admin')
+                  )
+                ) {
+                  try {
+                    // Different border intensities based on layer type
+                    let borderColor = mecanovaBeige;
+                    let borderOpacity = 0.3;
+                    let borderWidth = 0.5;
+                    
+                    // Major country boundaries - more visible
+                    if (layer.id.includes('admin-0') || layer.id.includes('country')) {
+                      borderOpacity = 0.5;
+                      borderWidth = 0.8;
+                    }
+                    // State/province boundaries - medium visibility
+                    else if (layer.id.includes('admin-1') || layer.id.includes('state')) {
+                      borderOpacity = 0.35;
+                      borderWidth = 0.6;
+                    }
+                    // Background/buffer borders - subtle
+                    else if (layer.id.includes('bg') || layer.id.includes('buffer')) {
+                      borderOpacity = 0.15;
+                      borderWidth = 1.0;
+                    }
+                    // Other boundaries - default
+                    else {
+                      borderOpacity = 0.25;
+                      borderWidth = 0.5;
+                    }
+                    
+                    // Apply border color and opacity
+                    if (map.getPaintProperty(layer.id, 'line-color')) {
+                      map.setPaintProperty(layer.id, 'line-color', borderColor);
+                    }
+                    if (map.getPaintProperty(layer.id, 'line-opacity')) {
+                      map.setPaintProperty(layer.id, 'line-opacity', borderOpacity);
+                    } else {
+                      // If opacity property doesn't exist, set color with opacity
+                      const beigeWithOpacity = mecanovaBeige + Math.floor(borderOpacity * 255).toString(16).padStart(2, '0');
+                      map.setPaintProperty(layer.id, 'line-color', beigeWithOpacity);
+                    }
+                    if (map.getPaintProperty(layer.id, 'line-width')) {
+                      map.setPaintProperty(layer.id, 'line-width', borderWidth);
+                    }
+                  } catch (e) {
+                    console.warn(`Could not update border layer ${layer.id}:`, e);
+                  }
+                }
+              });
+              
+              console.log('Borders updated to Mecanova beige');
+            });
+            
+            map.on('error', (e) => {
+              console.error('Mapbox error:', e.error);
+            });
+          } catch (error) {
+            console.error('Failed to initialize Mapbox globe:', error);
+          }
         }
       })();
     </script>
