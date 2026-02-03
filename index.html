@@ -122,6 +122,13 @@
         opacity: 1;
       }
       
+      /* Hide Mapbox labels using CSS - be specific to avoid hiding the map canvas */
+      #mapbox-globe .mapboxgl-marker,
+      #mapbox-globe .mapboxgl-popup {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+      }
       
       .hero-text-enhanced {
         text-shadow: 
@@ -477,7 +484,7 @@
           <div class="space-y-3 text-left max-w-xl mx-auto pt-4">
             <div class="flex items-start gap-3 bg-black/40 px-4 py-2 rounded-sm hero-check-item hero-text-enhanced" id="hero-check-1">
               <iconify-icon icon="solar:check-circle-bold" class="size-5 text-primary mt-1 flex-shrink-0"></iconify-icon>
-              <p class="text-muted-foreground text-base lg:text-lg">Germany-based importer built for retail, hospitality, and wholesale partners</p>
+              <p class="text-muted-foreground text-base lg:text-lg">Frankfurt-based importer built for retail, hospitality, and wholesale partners</p>
             </div>
             <div class="flex items-start gap-3 bg-black/40 px-4 py-2 rounded-sm hero-check-item hero-text-enhanced" id="hero-check-2">
               <iconify-icon icon="solar:check-circle-bold" class="size-5 text-primary mt-1 flex-shrink-0"></iconify-icon>
@@ -486,14 +493,14 @@
           </div>
           <div class="pt-10 flex flex-col sm:flex-row gap-8 justify-center items-center mb-10">
             <button
-              class="border border-primary text-primary px-12 py-5 uppercase tracking-widest text-sm hover:bg-primary hover:text-background hover:border-primary transition-all duration-300 w-full sm:w-auto"
+              class="border border-primary text-primary px-12 py-5 uppercase tracking-widest text-sm hover:bg-primary hover:text-background hover:border-primary transition-all duration-300 w-full sm:w-[280px]"
             >
-              Request a Portfolio &amp; Samples
+              Request Portfolio &amp; Samples
             </button>
             <button
-              class="border border-primary text-primary px-12 py-5 uppercase tracking-widest text-sm hover:bg-primary hover:text-background hover:border-primary transition-all duration-300 w-full sm:w-auto"
+              class="border border-primary text-primary px-12 py-5 uppercase tracking-widest text-sm hover:bg-primary hover:text-background hover:border-primary transition-all duration-300 w-full sm:w-[280px]"
             >
-              Become a Distribution Partner
+              Our Distribution Partners
             </button>
           </div>
         </div>
@@ -710,7 +717,7 @@
           <div class="mb-12 text-center">
             <h2 class="text-4xl lg:text-5xl font-heading font-light mb-6">Partnership Inquiries</h2>
             <p class="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto">
-              For qualified distribution, retail, or hospitality partnerships, please contact us to discuss access to our premium spirits portfolio.
+              For qualified retail or hospitality partnerships, please contact us to discuss access to our premium spirits portfolio.
             </p>
           </div>
           <form class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto" novalidate>
@@ -742,17 +749,17 @@
               ><input
                 type="email"
                 class="w-full bg-input border-b border-border focus:border-primary text-foreground px-4 py-4 outline-none transition-colors rounded-none placeholder:text-muted-foreground/30 text-lg"
-                placeholder="sebastian@example.com"
+                placeholder="donpatron@gmail.com"
                 required
               />
             </div>
             <div class="space-y-2 md:col-span-2">
               <label class="text-xs uppercase tracking-widest text-muted-foreground ml-1"
                 >Inquiry</label
-              ><textarea
+              >              <textarea
                 rows="6"
                 class="w-full bg-input border-b border-border focus:border-primary text-foreground px-4 py-4 outline-none transition-colors rounded-none resize-none placeholder:text-muted-foreground/30 text-lg"
-                placeholder="Tell us about your distribution needs..."
+                placeholder="Tell us about your business needs..."
                 required
               ></textarea>
             </div>
@@ -770,10 +777,13 @@
       </section>
       <footer class="py-16 px-8 lg:px-12 border-t border-border bg-background text-center">
         <div class="max-w-7xl mx-auto">
-          <div class="flex justify-center mb-10">
+          <div class="flex flex-col items-center mb-10">
             <h2 class="text-xl lg:text-2xl font-sans font-light text-primary/50 tracking-[0.15em] uppercase">
               MECANOVA
             </h2>
+            <p class="text-[0.6rem] lg:text-[0.7rem] font-sans font-light text-primary/50 tracking-[0.15em] uppercase mt-[1px]">
+              UG (HAFTUNGSBESCHRÄNKT)
+            </p>
           </div>
           <div class="flex justify-center gap-10 mb-10">
             <a href="#" class="text-muted-foreground hover:text-primary transition-colors"
@@ -787,8 +797,8 @@
           <div class="text-base text-muted-foreground/60 space-y-3">
             <p>© 2024 Mecanova. All rights reserved.</p>
             <div class="flex justify-center gap-6 text-sm">
-              <a href="#" class="hover:text-primary transition-colors">Privacy Policy</a><span>|</span
-              ><a href="#" class="hover:text-primary transition-colors">Terms of Service</a>
+              <a href="privacy-policy.html" class="hover:text-primary transition-colors">Privacy Policy</a><span>|</span
+              ><a href="terms-of-service.html" class="hover:text-primary transition-colors">Terms of Service</a>
             </div>
           </div>
         </div>
@@ -852,6 +862,64 @@
             
             map.on('load', () => {
               console.log('Mapbox map loaded');
+              
+              // Debug: Identify all label layer IDs - Enhanced for better visibility
+              console.log('%c=== IDENTIFYING ALL LABEL LAYERS ===', 'color: #00ff00; font-size: 14px; font-weight: bold;');
+              const layers = map.getStyle().layers;
+              
+              const symbolLayers = [];
+              const labelLayers = [];
+              const labelDetails = [];
+              
+              layers.forEach(layer => {
+                if (layer.type === 'symbol') {
+                  symbolLayers.push(layer.id);
+                  
+                  if (layer.layout && layer.layout['text-field']) {
+                    labelLayers.push(layer.id);
+                    labelDetails.push({
+                      'Layer ID': layer.id,
+                      'Text Field': layer.layout['text-field'] || 'N/A',
+                      'Source': layer.source || 'N/A'
+                    });
+                  }
+                }
+              });
+              
+              console.log('%cALL SYMBOL LAYERS (' + symbolLayers.length + ' total)', 'color: #ffaa00; font-weight: bold;');
+              symbolLayers.forEach(id => console.log('  • ' + id));
+              
+              console.log('%cLABEL LAYERS WITH TEXT-FIELD (' + labelLayers.length + ' total)', 'color: #ff0000; font-weight: bold;');
+              if (labelDetails.length > 0) {
+                console.table(labelDetails);
+                labelLayers.forEach(id => console.log('  • ' + id));
+              } else {
+                console.log('  No label layers found with text-field');
+              }
+              
+              console.log('%c=== SUMMARY ===', 'color: #00ff00; font-weight: bold;');
+              console.log('Symbol layers array:', symbolLayers);
+              console.log('Label layers array:', labelLayers);
+              console.log('%c=== END ===', 'color: #00ff00; font-weight: bold;');
+              
+              // Display layer IDs in a visible box on the page
+              if (labelLayers.length > 0) {
+                const debugBox = document.createElement('div');
+                debugBox.style.cssText = 'position: fixed; top: 20px; right: 20px; background: rgba(0,0,0,0.95); color: #00ff00; padding: 20px; border: 3px solid #00ff00; border-radius: 8px; z-index: 10000; max-width: 500px; max-height: 80vh; overflow-y: auto; font-family: monospace; font-size: 13px; box-shadow: 0 4px 20px rgba(0,255,0,0.3);';
+                debugBox.innerHTML = 
+                  '<h3 style="margin-top:0; color: #00ff00; border-bottom: 2px solid #00ff00; padding-bottom: 10px;">📍 Label Layer IDs Found</h3>' +
+                  '<p style="color: #ffaa00; font-weight: bold; margin: 10px 0;">Total: ' + labelLayers.length + ' label layers</p>' +
+                  '<div style="background: rgba(0,255,0,0.1); padding: 10px; border-radius: 4px; margin: 10px 0;">' +
+                  '<strong style="color: #00ff00;">All Label Layer IDs:</strong>' +
+                  '<ul style="list-style: none; padding-left: 0; margin: 10px 0;">' +
+                  labelLayers.map(id => '<li style="padding: 8px; border-bottom: 1px solid rgba(0,255,0,0.2); color: #ecdfcc;">• ' + id + '</li>').join('') +
+                  '</ul>' +
+                  '</div>' +
+                  '<button onclick="navigator.clipboard.writeText(\'' + labelLayers.join('\\n') + '\').then(() => { alert(\'✅ Copied all ' + labelLayers.length + ' IDs to clipboard!\'); })" style="margin-top: 10px; padding: 10px 20px; background: #00ff00; color: #000; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px;">📋 Copy All IDs</button>' +
+                  '<button onclick="this.parentElement.remove()" style="margin-top: 10px; margin-left: 10px; padding: 10px 20px; background: #ff0000; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 12px;">✕ Close</button>';
+                document.body.appendChild(debugBox);
+              }
+              
               // Darken the background significantly
               map.setFog({
                 color: 'rgba(0, 0, 0, 0.98)', // Much darker background
@@ -876,9 +944,25 @@
                 // Small delay to ensure map is fully rendered
                 setTimeout(() => {
                   canvas.classList.add('fade-in');
+                  // Ensure canvas is visible (fallback)
+                  canvas.style.opacity = '1';
+                  canvas.style.display = 'block';
+                  canvas.style.visibility = 'visible';
                   // Trigger hero text fade-in at the same time
                   triggerHeroFadeIn();
                 }, 100);
+              } else {
+                // If canvas not found, try again after a longer delay
+                setTimeout(() => {
+                  const canvasRetry = mapContainer.querySelector('.mapboxgl-canvas');
+                  if (canvasRetry) {
+                    canvasRetry.classList.add('fade-in');
+                    canvasRetry.style.opacity = '1';
+                    canvasRetry.style.display = 'block';
+                    canvasRetry.style.visibility = 'visible';
+                    triggerHeroFadeIn();
+                  }
+                }, 1000);
               }
               
               // Continuous rotation animation - move center around the globe
@@ -902,84 +986,211 @@
               }
               rotateGlobe();
               console.log('Mapbox globe rotation started');
+              
+              // Also hide labels after map loads (in case some appear later or style.load fires before all layers are ready)
+              function hideAllLabels() {
+                try {
+                  const layers = map.getStyle().layers;
+                  layers.forEach(layer => {
+                    // Only hide symbol layers that are actually labels (not all symbol layers)
+                    if (layer.type === 'symbol' && (
+                      layer.id.includes('label') ||
+                      layer.id.includes('place') ||
+                      layer.id.includes('country') ||
+                      layer.id.includes('name') ||
+                      layer.id.includes('text')
+                    )) {
+                      try {
+                        // Use safe methods that won't break the map rendering
+                        map.setLayoutProperty(layer.id, 'visibility', 'none');
+                        if (map.getPaintProperty(layer.id, 'text-opacity')) {
+                          map.setPaintProperty(layer.id, 'text-opacity', 0);
+                        }
+                        if (map.getPaintProperty(layer.id, 'text-color')) {
+                          map.setPaintProperty(layer.id, 'text-color', 'rgba(0,0,0,0)');
+                        }
+                        // Don't modify text-size or icon-size as it might break map rendering
+                      } catch (e) {
+                        // Silently ignore errors for layers that don't have these properties
+                      }
+                    }
+                  });
+                } catch (e) {
+                  console.warn('Could not hide labels:', e);
+                }
+              }
+              
+              // Hide labels after a delay to ensure map is fully loaded and visible first
+              setTimeout(() => {
+                console.log('Hiding labels after map load...');
+                hideAllLabels();
+              }, 2000);
             });
             
             map.on('style.load', () => {
               console.log('Mapbox style loaded, hiding labels and updating borders...');
-              const layers = map.getStyle().layers;
-              const mecanovaBeige = '#ecdfcc'; // Mecanova brand beige color
+              
+              // Wait a bit to ensure map is rendering before hiding labels
+              setTimeout(() => {
+                const layers = map.getStyle().layers;
+                const mecanovaBeige = '#ecdfcc'; // Mecanova brand beige color
 
-              layers.forEach(layer => {
-                // Hide labels
-                if (
-                  layer.type === 'symbol' &&
-                  (
+                layers.forEach(layer => {
+                  // Only hide symbol layers that are actually labels (not all symbol layers)
+                  if (layer.type === 'symbol' && (
                     layer.id.includes('label') ||
                     layer.id.includes('place') ||
-                    layer.id.includes('country')
-                  )
-                ) {
-                  map.setLayoutProperty(layer.id, 'visibility', 'none');
-                }
-                
-                // Update border colors to Mecanova beige with varying intensities
-                if (
-                  layer.type === 'line' &&
-                  (
-                    layer.id.includes('boundary') ||
-                    layer.id.includes('border') ||
-                    layer.id.includes('admin')
-                  )
-                ) {
-                  try {
-                    // Different border intensities based on layer type
-                    let borderColor = mecanovaBeige;
-                    let borderOpacity = 0.3;
-                    let borderWidth = 0.5;
-                    
-                    // Major country boundaries - more visible
-                    if (layer.id.includes('admin-0') || layer.id.includes('country')) {
-                      borderOpacity = 0.5;
-                      borderWidth = 0.8;
+                    layer.id.includes('country') ||
+                    layer.id.includes('name') ||
+                    layer.id.includes('text')
+                  )) {
+                    try {
+                      // Method 1: Hide visibility (primary method)
+                      map.setLayoutProperty(layer.id, 'visibility', 'none');
+                      
+                      // Method 2: Set text opacity to 0 as backup
+                      if (map.getPaintProperty(layer.id, 'text-opacity')) {
+                        map.setPaintProperty(layer.id, 'text-opacity', 0);
+                      }
+                      
+                      // Method 3: Set text color to transparent as additional backup
+                      if (map.getPaintProperty(layer.id, 'text-color')) {
+                        map.setPaintProperty(layer.id, 'text-color', 'rgba(0,0,0,0)');
+                      }
+                      
+                      // Don't modify text-size or icon-size as it might break map rendering
+                    } catch (e) {
+                      console.warn(`Could not hide label layer ${layer.id}:`, e);
                     }
-                    // State/province boundaries - medium visibility
-                    else if (layer.id.includes('admin-1') || layer.id.includes('state')) {
-                      borderOpacity = 0.35;
-                      borderWidth = 0.6;
-                    }
-                    // Background/buffer borders - subtle
-                    else if (layer.id.includes('bg') || layer.id.includes('buffer')) {
-                      borderOpacity = 0.15;
-                      borderWidth = 1.0;
-                    }
-                    // Other boundaries - default
-                    else {
-                      borderOpacity = 0.25;
-                      borderWidth = 0.5;
-                    }
-                    
-                    // Apply border color and opacity
-                    if (map.getPaintProperty(layer.id, 'line-color')) {
-                      map.setPaintProperty(layer.id, 'line-color', borderColor);
-                    }
-                    if (map.getPaintProperty(layer.id, 'line-opacity')) {
-                      map.setPaintProperty(layer.id, 'line-opacity', borderOpacity);
-                    } else {
-                      // If opacity property doesn't exist, set color with opacity
-                      const beigeWithOpacity = mecanovaBeige + Math.floor(borderOpacity * 255).toString(16).padStart(2, '0');
-                      map.setPaintProperty(layer.id, 'line-color', beigeWithOpacity);
-                    }
-                    if (map.getPaintProperty(layer.id, 'line-width')) {
-                      map.setPaintProperty(layer.id, 'line-width', borderWidth);
-                    }
-                  } catch (e) {
-                    console.warn(`Could not update border layer ${layer.id}:`, e);
                   }
-                }
-              });
-              
-              console.log('Borders updated to Mecanova beige');
+                
+                  // Update border colors to Mecanova beige with varying intensities
+                  if (
+                    layer.type === 'line' &&
+                    (
+                      layer.id.includes('boundary') ||
+                      layer.id.includes('border') ||
+                      layer.id.includes('admin')
+                    )
+                  ) {
+                    try {
+                      // Different border intensities based on layer type
+                      let borderColor = mecanovaBeige;
+                      let borderOpacity = 0.3;
+                      let borderWidth = 0.5;
+                      
+                      // Major country boundaries - more visible
+                      if (layer.id.includes('admin-0') || layer.id.includes('country')) {
+                        borderOpacity = 0.5;
+                        borderWidth = 0.8;
+                      }
+                      // State/province boundaries - medium visibility
+                      else if (layer.id.includes('admin-1') || layer.id.includes('state')) {
+                        borderOpacity = 0.35;
+                        borderWidth = 0.6;
+                      }
+                      // Background/buffer borders - subtle
+                      else if (layer.id.includes('bg') || layer.id.includes('buffer')) {
+                        borderOpacity = 0.15;
+                        borderWidth = 1.0;
+                      }
+                      // Other boundaries - default
+                      else {
+                        borderOpacity = 0.25;
+                        borderWidth = 0.5;
+                      }
+                      
+                      // Apply border color and opacity
+                      if (map.getPaintProperty(layer.id, 'line-color')) {
+                        map.setPaintProperty(layer.id, 'line-color', borderColor);
+                      }
+                      if (map.getPaintProperty(layer.id, 'line-opacity')) {
+                        map.setPaintProperty(layer.id, 'line-opacity', borderOpacity);
+                      } else {
+                        // If opacity property doesn't exist, set color with opacity
+                        const beigeWithOpacity = mecanovaBeige + Math.floor(borderOpacity * 255).toString(16).padStart(2, '0');
+                        map.setPaintProperty(layer.id, 'line-color', beigeWithOpacity);
+                      }
+                      if (map.getPaintProperty(layer.id, 'line-width')) {
+                        map.setPaintProperty(layer.id, 'line-width', borderWidth);
+                      }
+                    } catch (e) {
+                      console.warn(`Could not update border layer ${layer.id}:`, e);
+                    }
+                  }
+                });
+                
+                console.log('Labels hidden and borders updated to Mecanova beige');
+              }, 500); // Wait 500ms after style.load before hiding labels
             });
+            
+            // Hide labels whenever new data is loaded
+            map.on('data', () => {
+              setTimeout(() => {
+                try {
+                  const layers = map.getStyle().layers;
+                  layers.forEach(layer => {
+                    // Only hide label layers
+                    if (layer.type === 'symbol' && (
+                      layer.id.includes('label') ||
+                      layer.id.includes('place') ||
+                      layer.id.includes('country') ||
+                      layer.id.includes('name') ||
+                      layer.id.includes('text')
+                    )) {
+                      try {
+                        map.setLayoutProperty(layer.id, 'visibility', 'none');
+                        if (map.getPaintProperty(layer.id, 'text-opacity')) {
+                          map.setPaintProperty(layer.id, 'text-opacity', 0);
+                        }
+                        if (map.getPaintProperty(layer.id, 'text-color')) {
+                          map.setPaintProperty(layer.id, 'text-color', 'rgba(0,0,0,0)');
+                        }
+                      } catch (e) {
+                        // Ignore errors
+                      }
+                    }
+                  });
+                } catch (e) {
+                  // Ignore errors
+                }
+              }, 100);
+            });
+            
+            // Continuously check and hide labels every 2 seconds (only label layers)
+            setInterval(() => {
+              try {
+                const layers = map.getStyle().layers;
+                layers.forEach(layer => {
+                  // Only check and hide label layers
+                  if (layer.type === 'symbol' && (
+                    layer.id.includes('label') ||
+                    layer.id.includes('place') ||
+                    layer.id.includes('country') ||
+                    layer.id.includes('name') ||
+                    layer.id.includes('text')
+                  )) {
+                    try {
+                      const visibility = map.getLayoutProperty(layer.id, 'visibility');
+                      if (visibility !== 'none') {
+                        map.setLayoutProperty(layer.id, 'visibility', 'none');
+                      }
+                      // Check text-opacity as backup
+                      if (map.getPaintProperty(layer.id, 'text-opacity')) {
+                        const opacity = map.getPaintProperty(layer.id, 'text-opacity');
+                        if (opacity !== 0) {
+                          map.setPaintProperty(layer.id, 'text-opacity', 0);
+                        }
+                      }
+                    } catch (e) {
+                      // Ignore errors
+                    }
+                  }
+                });
+              } catch (e) {
+                // Ignore errors
+              }
+            }, 2000);
             
             map.on('error', (e) => {
               console.error('Mapbox error:', e.error);
