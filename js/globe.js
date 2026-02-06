@@ -215,7 +215,7 @@ class GlobeComponent {
       .polygonAltitude(0.01)
       .polygonCapColor(() => 'rgba(15, 15, 15, 0.95)') // Dark grey fill
       .polygonSideColor(() => 'rgba(15, 15, 15, 0.8)') // Dark grey sides
-      .polygonStrokeColor(() => '#6B7280'); // Even darker silver borders
+      .polygonStrokeColor(() => '#4B5563'); // Darker silver borders
 
     // Load country borders/polygons
     // Load GeoJSON data for countries

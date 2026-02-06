@@ -23,6 +23,8 @@
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
+    <script src="js/translations.js"></script>
     <style type="text/tailwindcss">
 
       @theme inline {
@@ -93,22 +95,121 @@
 
         --radius: 0rem;
       }
+      
+      .nav-link-border {
+        border: 2px solid rgba(236, 223, 204, 0);
+        transition: border-color 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), color 0.3s ease;
+      }
+      
+      .nav-link-border:hover {
+        border-color: rgba(236, 223, 204, 1);
+      }
+      
+      .client-login-btn {
+        background-color: rgba(236, 223, 204, 1);
+        color: #111111;
+        border: 2px solid rgba(236, 223, 204, 1);
+        transition: background-color 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                    color 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                    border-color 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      
+      .client-login-btn:hover {
+        background-color: transparent;
+        color: rgba(236, 223, 204, 1);
+        border-color: rgba(236, 223, 204, 1);
+      }
+      
+      /* Language switcher button styling */
+      .lang-switcher-btn {
+        font-family: var(--font-sans);
+        background-color: transparent;
+        color: var(--foreground);
+        border: 2px solid transparent !important;
+        transition: border-color 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                    color 0.3s ease;
+        cursor: pointer;
+        min-width: 3rem;
+        text-align: center;
+        outline: none;
+      }
+      
+      .lang-switcher-btn:hover {
+        border-color: rgba(236, 223, 204, 1) !important;
+        color: var(--primary);
+      }
+      
+      .lang-switcher-btn:focus,
+      .lang-switcher-btn:active,
+      .lang-switcher-btn:focus-visible {
+        outline: none;
+        border-color: transparent !important;
+      }
+      
+      .lang-switcher-btn:focus:hover,
+      .lang-switcher-btn:active:hover {
+        border-color: rgba(236, 223, 204, 1) !important;
+      }
     </style>
   </head>
   <body>
-    <div class="min-h-screen bg-background text-foreground font-sans flex items-center justify-center">
+    <header
+      class="fixed top-0 left-0 right-0 z-[9999] backdrop-blur-md border-b border-border"
+      style="background-color: #0b0c0a;"
+    >
+      <div class="max-w-7xl mx-auto flex items-center justify-between pl-4 pr-4 lg:pl-6 lg:pr-4 py-6">
+        <div class="h-12 flex items-center">
+          <a href="index.html" class="flex items-center">
+            <h1 class="text-2xl lg:text-3xl font-sans font-light text-primary tracking-[0.15em] uppercase">
+              MECANOVA
+            </h1>
+          </a>
+        </div>
+        <nav class="hidden md:flex items-center gap-8 mr-0">
+          <a href="index.html#portfolio" class="nav-link-border text-sm uppercase tracking-wider text-foreground hover:text-primary px-3 py-2 box-border" data-i18n="navPortfolio">Portfolio</a>
+          <a href="index.html#about" class="nav-link-border text-sm uppercase tracking-wider text-foreground hover:text-primary px-3 py-2 box-border" data-i18n="navAbout">About</a>
+          <a href="technology.html" class="nav-link-border text-sm uppercase tracking-wider text-foreground hover:text-primary px-3 py-2 box-border" data-i18n="navTechnology">Technology</a>
+          <a href="index.html#contact" class="nav-link-border text-sm uppercase tracking-wider text-foreground hover:text-primary px-3 py-2 box-border" data-i18n="navContact">Contact</a>
+          <a href="coming-soon.html" class="client-login-btn px-6 py-2 uppercase tracking-widest text-xs inline-block" data-i18n="navClientLogin">
+            Client Log-In
+          </a>
+          <button 
+            id="lang-switcher"
+            onclick="window.i18n.toggleLanguage(); this.blur();"
+            class="lang-switcher-btn px-4 py-2 uppercase tracking-widest text-xs"
+            aria-label="Switch language"
+          >
+            DE
+          </button>
+        </nav>
+        <div class="md:hidden flex items-center gap-4">
+          <button 
+            id="lang-switcher-mobile"
+            onclick="window.i18n.toggleLanguage(); this.blur();"
+            class="lang-switcher-btn px-3 py-2 uppercase tracking-widest text-xs"
+            aria-label="Switch language"
+          >
+            DE
+          </button>
+          <button class="p-2 text-foreground">
+            <iconify-icon icon="solar:hamburger-menu-linear" class="size-8"></iconify-icon>
+          </button>
+        </div>
+      </div>
+    </header>
+    <div class="min-h-screen bg-background text-foreground font-sans flex items-center justify-center pt-24">
       <div class="text-center space-y-8 px-6 max-w-2xl mx-auto">
-        <h1 class="text-4xl lg:text-6xl font-heading font-light tracking-wide text-primary">
+        <h1 class="text-4xl lg:text-6xl font-heading font-light tracking-wide text-primary" data-i18n="tequilaTitle">
           Tequila Collection
         </h1>
         <div class="h-px w-24 bg-primary mx-auto"></div>
-        <p class="text-lg lg:text-xl text-muted-foreground leading-relaxed">
+        <p class="text-lg lg:text-xl text-muted-foreground leading-relaxed" data-i18n="tequilaDesc">
           Our tequila portfolio is currently being curated. We're selecting exceptional expressions that meet our standards for purity, terroir expression, and production integrity.
         </p>
-        <p class="text-base text-muted-foreground/80">
+        <p class="text-base text-muted-foreground/80" data-i18n="comingSoon">
           Coming soon.
         </p>
-        <a href="index.html" class="inline-block bg-primary text-primary-foreground px-8 py-4 uppercase tracking-widest text-sm hover:bg-muted-foreground transition-colors duration-300 mt-8">
+        <a href="index.html" class="inline-block bg-primary text-primary-foreground px-8 py-4 uppercase tracking-widest text-sm hover:bg-muted-foreground transition-colors duration-300 mt-8" data-i18n="returnHome">
           Return to Home
         </a>
       </div>

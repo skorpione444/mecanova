@@ -33,6 +33,7 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
     <script src="https://unpkg.com/three-globe@2.32.0/dist/three-globe.min.js"></script>
     <script src="js/globe.js"></script>
+    <script src="js/translations.js"></script>
     <style type="text/tailwindcss">
 
       @theme inline {
@@ -398,6 +399,37 @@
         will-change: transform;
         transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       }
+      
+      /* Language switcher button styling */
+      .lang-switcher-btn {
+        font-family: var(--font-sans);
+        background-color: transparent;
+        color: var(--foreground);
+        border: 2px solid transparent !important;
+        transition: border-color 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                    color 0.3s ease;
+        cursor: pointer;
+        min-width: 3rem;
+        text-align: center;
+        outline: none;
+      }
+      
+      .lang-switcher-btn:hover {
+        border-color: rgba(236, 223, 204, 1) !important;
+        color: var(--primary);
+      }
+      
+      .lang-switcher-btn:focus,
+      .lang-switcher-btn:active,
+      .lang-switcher-btn:focus-visible {
+        outline: none;
+        border-color: transparent !important;
+      }
+      
+      .lang-switcher-btn:focus:hover,
+      .lang-switcher-btn:active:hover {
+        border-color: rgba(236, 223, 204, 1) !important;
+      }
     </style>
   </head>
   <body>
@@ -406,24 +438,42 @@
         class="fixed top-0 left-0 right-0 z-[9999] backdrop-blur-md border-b border-border"
         style="background-color: #0b0c0a;"
       >
-        <div class="max-w-7xl mx-auto flex items-center justify-between pl-4 pr-8 lg:pl-6 lg:pr-12 py-6">
+        <div class="max-w-7xl mx-auto flex items-center justify-between pl-4 pr-4 lg:pl-6 lg:pr-4 py-6">
           <div class="h-12 flex items-center">
             <h1 class="text-2xl lg:text-3xl font-sans font-light text-primary tracking-[0.15em] uppercase">
               MECANOVA
             </h1>
           </div>
-          <nav class="hidden md:flex items-center gap-8">
-            <a href="#portfolio" class="nav-link-border text-sm uppercase tracking-wider text-foreground hover:text-primary px-3 py-2 box-border">Portfolio</a>
-            <a href="#about" class="nav-link-border text-sm uppercase tracking-wider text-foreground hover:text-primary px-3 py-2 box-border">About</a>
-            <a href="technology.html" class="nav-link-border text-sm uppercase tracking-wider text-foreground hover:text-primary px-3 py-2 box-border">Technology</a>
-            <a href="#contact" class="nav-link-border text-sm uppercase tracking-wider text-foreground hover:text-primary px-3 py-2 box-border">Contact</a>
-            <a href="coming-soon.html" class="client-login-btn px-6 py-2 uppercase tracking-widest text-xs inline-block">
+          <nav class="hidden md:flex items-center gap-8 mr-0">
+            <a href="#portfolio" class="nav-link-border text-sm uppercase tracking-wider text-foreground hover:text-primary px-3 py-2 box-border" data-i18n="navPortfolio">Portfolio</a>
+            <a href="#about" class="nav-link-border text-sm uppercase tracking-wider text-foreground hover:text-primary px-3 py-2 box-border" data-i18n="navAbout">About</a>
+            <a href="technology.html" class="nav-link-border text-sm uppercase tracking-wider text-foreground hover:text-primary px-3 py-2 box-border" data-i18n="navTechnology">Technology</a>
+            <a href="#contact" class="nav-link-border text-sm uppercase tracking-wider text-foreground hover:text-primary px-3 py-2 box-border" data-i18n="navContact">Contact</a>
+            <a href="coming-soon.html" class="client-login-btn px-6 py-2 uppercase tracking-widest text-xs inline-block" data-i18n="navClientLogin">
               Client Log-In
             </a>
+            <button 
+              id="lang-switcher"
+              onclick="window.i18n.toggleLanguage(); this.blur();"
+              class="lang-switcher-btn px-4 py-2 uppercase tracking-widest text-xs"
+              aria-label="Switch language"
+            >
+              DE
+            </button>
           </nav>
-          <button class="md:hidden p-2 text-foreground">
-            <iconify-icon icon="solar:hamburger-menu-linear" class="size-8"></iconify-icon>
-          </button>
+          <div class="md:hidden flex items-center gap-4">
+            <button 
+              id="lang-switcher-mobile"
+              onclick="window.i18n.toggleLanguage(); this.blur();"
+              class="lang-switcher-btn px-3 py-2 uppercase tracking-widest text-xs"
+              aria-label="Switch language"
+            >
+              DE
+            </button>
+            <button class="p-2 text-foreground">
+              <iconify-icon icon="solar:hamburger-menu-linear" class="size-8"></iconify-icon>
+            </button>
+          </div>
         </div>
       </header>
       <section
@@ -440,7 +490,7 @@
             <span
               class="text-sm uppercase tracking-[0.3em] text-muted-foreground font-medium pb-2 inline-block relative"
             >
-              Est. 2024
+              <span data-i18n="heroEst">Est. 2024</span>
               <span class="hero-divider absolute bottom-0 left-0 right-0 h-px bg-muted-foreground/30"></span>
             </span>
           </div>
@@ -451,44 +501,46 @@
             <div class="flex flex-col items-center gap-2">
               <div class="flex items-center gap-4 mt-2">
                 <div class="hero-line hidden md:block w-12 h-[1px] bg-[#ecdfcc]/30"></div>
-                <span class="hero-text-item hero-text-enhanced text-4xl font-serif italic text-[#ecdfcc]/90 inline-block" id="hero-premium">
+                <span class="hero-text-item hero-text-enhanced text-4xl font-serif italic text-[#ecdfcc]/90 inline-block" id="hero-premium" data-i18n="heroPremiumAgave">
                   Premium Agave Spirits
                 </span>
                 <div class="hero-line hidden md:block w-12 h-[1px] bg-[#ecdfcc]/30"></div>
               </div>
               <span class="hero-text-item hero-emphasis hero-text-enhanced text-base md:text-lg lg:text-xl font-heading font-light text-[#ecdfcc] inline-block tracking-widest uppercase" id="hero-infrastructure">
-                Import <span class="text-[#ecdfcc] mx-3">•</span> Distribution <span class="text-[#ecdfcc] mx-3">•</span> Infrastructure
+                <span data-i18n="heroImport">Import</span> <span class="text-[#ecdfcc] mx-3">•</span> <span data-i18n="heroDistribution">Distribution</span> <span class="text-[#ecdfcc] mx-3">•</span> <span data-i18n="heroInfrastructure">Infrastructure</span>
               </span>
             </div>
           </h1>
           <p class="hero-text-enhanced text-xl lg:text-2xl text-muted-foreground leading-relaxed max-w-2xl mx-auto inline-block" id="hero-paragraph">
-            <span class="hero-paragraph-line">Connecting exceptional agave spirits with Europe through compliant import and logistics.</span>
+            <span class="hero-paragraph-line" data-i18n="heroTagline">Connecting exceptional agave spirits with Europe through compliant import and logistics.</span>
           </p>
           <div class="space-y-3 text-left max-w-xl mx-auto pt-4">
             <div class="flex items-start gap-3 hero-check-item hero-text-enhanced" id="hero-check-1">
               <iconify-icon icon="solar:check-circle-bold" class="size-5 text-primary mt-1 flex-shrink-0"></iconify-icon>
-              <p class="text-muted-foreground text-base lg:text-lg">Frankfurt-based importer built for retail, hospitality, and wholesale partners</p>
+              <p class="text-muted-foreground text-base lg:text-lg" data-i18n="heroCheck1">Frankfurt-based importer built for retail, hospitality, and wholesale partners</p>
             </div>
             <div class="flex items-start gap-3 hero-check-item hero-text-enhanced" id="hero-check-2">
               <iconify-icon icon="solar:check-circle-bold" class="size-5 text-primary mt-1 flex-shrink-0"></iconify-icon>
-              <p class="text-muted-foreground text-base lg:text-lg">Compliance-first: labeling, documentation, and traceability handled properly</p>
+              <p class="text-muted-foreground text-base lg:text-lg" data-i18n="heroCheck2">Compliance-first: labeling, documentation, and traceability handled properly</p>
             </div>
           </div>
           <div class="pt-10 flex flex-col sm:flex-row gap-8 justify-center items-center mb-10">
             <button
               class="border border-primary text-primary px-8 py-5 uppercase tracking-widest text-sm hover:bg-primary hover:text-background hover:border-primary transition-all duration-300 w-full sm:w-auto sm:px-10 whitespace-nowrap"
+              data-i18n="heroButton1"
             >
               Request Portfolio &amp; Samples
             </button>
             <button
               class="border border-primary text-primary px-8 py-5 uppercase tracking-widest text-sm hover:bg-primary hover:text-background hover:border-primary transition-all duration-300 w-full sm:w-auto sm:px-10 whitespace-nowrap"
+              data-i18n="heroButton2"
             >
               Our Distribution Partners
             </button>
           </div>
         </div>
         <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-          <span class="text-xs uppercase tracking-widest text-muted-foreground opacity-50">SCROLL</span>
+          <span class="text-xs uppercase tracking-widest text-muted-foreground opacity-50" data-i18n="heroScroll">SCROLL</span>
           <div class="w-px h-8 bg-muted-foreground/30"></div>
         </div>
         <div class="fixed left-6 md:left-12 top-1/2 -translate-y-1/2 hidden lg:block z-[100]">
@@ -517,7 +569,7 @@
         </div>
         <div class="max-w-7xl mx-auto space-y-16 relative z-10">
           <div class="flex flex-col items-start gap-4 mb-12">
-            <h2 class="text-4xl lg:text-5xl font-heading font-light tracking-wide">Our Portfolio</h2>
+            <h2 class="text-4xl lg:text-5xl font-heading font-light tracking-wide" data-i18n="portfolioTitle">Our Portfolio</h2>
             <div class="h-px w-24 bg-primary"></div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -528,8 +580,8 @@
                 <iconify-icon icon="mdi:glass-cocktail" class="size-48 group-hover:text-background"></iconify-icon>
               </div>
               <div class="space-y-4 z-10">
-                <h3 class="text-2xl font-heading text-primary group-hover:text-background">Tequila</h3>
-                <p class="text-muted-foreground group-hover:text-background text-sm leading-relaxed">
+                <h3 class="text-2xl font-heading text-primary group-hover:text-background" data-i18n="portfolioTequila">Tequila</h3>
+                <p class="text-muted-foreground group-hover:text-background text-sm leading-relaxed" data-i18n="portfolioTequilaDesc">
                   Premium tequila selected for clarity of terroir and production integrity—clean agave expression, balanced profiles, and reliable consistency for on-trade and retail. Built for partners who care about credibility, not gimmicks.
                 </p>
               </div>
@@ -537,7 +589,7 @@
                 <span
                   class="portfolio-view-collection text-primary group-hover:text-background text-sm uppercase tracking-wider font-medium"
                 >
-                  View Collection
+                  <span data-i18n="portfolioViewCollection">View Collection</span>
                   <iconify-icon icon="solar:arrow-right-linear" class="ml-2 size-4"></iconify-icon>
                 </span>
               </div>
@@ -549,8 +601,8 @@
                 <iconify-icon icon="lucide:flame" class="size-48 group-hover:text-background"></iconify-icon>
               </div>
               <div class="space-y-4 z-10">
-                <h3 class="text-2xl font-heading text-primary group-hover:text-background">Mezcal</h3>
-                <p class="text-muted-foreground group-hover:text-background text-sm leading-relaxed">
+                <h3 class="text-2xl font-heading text-primary group-hover:text-background" data-i18n="portfolioMezcal">Mezcal</h3>
+                <p class="text-muted-foreground group-hover:text-background text-sm leading-relaxed" data-i18n="portfolioMezcalDesc">
                   Craft mezcal with a focus on character and provenance—distinct agave profiles, thoughtful production, and transparent sourcing. Ideal for premium bars, specialist retailers, and partners building a serious spirits range.
                 </p>
               </div>
@@ -558,7 +610,7 @@
                 <span
                   class="portfolio-view-collection text-primary group-hover:text-background text-sm uppercase tracking-wider font-medium"
                 >
-                  View Collection
+                  <span data-i18n="portfolioViewCollection">View Collection</span>
                   <iconify-icon icon="solar:arrow-right-linear" class="ml-2 size-4"></iconify-icon>
                 </span>
               </div>
@@ -570,8 +622,8 @@
                 <iconify-icon icon="solar:leaf-linear" class="size-48 group-hover:text-background"></iconify-icon>
               </div>
               <div class="space-y-4 z-10">
-                <h3 class="text-2xl font-heading text-primary group-hover:text-background">Raicilla</h3>
-                <p class="text-muted-foreground group-hover:text-background text-sm leading-relaxed">
+                <h3 class="text-2xl font-heading text-primary group-hover:text-background" data-i18n="portfolioRaicilla">Raicilla</h3>
+                <p class="text-muted-foreground group-hover:text-background text-sm leading-relaxed" data-i18n="portfolioRaicillaDesc">
                   A rare agave spirit defined by precision and character—bright aromatics, natural complexity, and a profile that stands apart without excess. Our raicilla selections are chosen for purity and balance, offering genuine differentiation for partners seeking something distinctive and uncompromised.
                 </p>
               </div>
@@ -579,7 +631,7 @@
                 <span
                   class="portfolio-view-collection text-primary group-hover:text-background text-sm uppercase tracking-wider font-medium"
                 >
-                  View Collection
+                  <span data-i18n="portfolioViewCollection">View Collection</span>
                   <iconify-icon icon="solar:arrow-right-linear" class="ml-2 size-4"></iconify-icon>
                 </span>
               </div>
@@ -623,70 +675,70 @@
           </div>
 
           <div class="flex flex-col items-center text-center gap-4 mb-12">
-            <span class="about-eyebrow text-xs uppercase tracking-[0.25em] text-muted-foreground font-medium">About</span>
-            <h2 class="about-heading text-4xl lg:text-5xl font-heading font-semibold tracking-tight text-primary">
+            <span class="about-eyebrow text-xs uppercase tracking-[0.25em] text-muted-foreground font-medium" data-i18n="aboutEyebrow">About</span>
+            <h2 class="about-heading text-4xl lg:text-5xl font-heading font-semibold tracking-tight text-primary" data-i18n="aboutTitle">
               Four Pillars
             </h2>
-            <p class="about-subhead text-lg text-[rgba(205,201,194,0.9)]">
+            <p class="about-subhead text-lg text-[rgba(205,201,194,0.9)]" data-i18n="aboutSubhead">
               From origin to expression.
             </p>
           </div>
 
           <div class="pillars flex flex-col gap-8">
-            <div class="pillar bg-transparent px-8 py-10 md:py-14" data-keyword="Integrity" role="article" aria-label="Integrity Before Scale">
+            <div class="pillar bg-transparent px-8 py-10 md:py-14" data-keyword="Integrity" data-pillar-index="1" role="article" aria-label="Integrity Before Scale">
               <div class="flex items-start gap-6">
                 <div class="numeral text-[rgba(205,201,194,0.45)] text-xl font-serif leading-none">I</div>
                 <div class="w-full">
-                  <h3 class="pillar-title text-2xl lg:text-3xl font-heading font-semibold tracking-tight text-primary">
-                    <span class="keyword">Integrity</span> Before Scale
+                  <h3 class="pillar-title text-2xl lg:text-3xl font-heading font-semibold tracking-tight text-primary" data-i18n="pillar1Title">
+                    Integrity Before Scale
                   </h3>
                   <div class="divider mt-4 mb-6" aria-hidden="true"></div>
-                  <p class="pillar-body text-[rgba(205,201,194,0.9)] leading-[1.6] text-base lg:text-lg">
+                  <p class="pillar-body text-[rgba(205,201,194,0.9)] leading-[1.6] text-base lg:text-lg" data-i18n="pillar1Body">
                     We were founded on a simple conviction: quality must come before scale. In a category increasingly shaped by additives and artificial correction, we work exclusively with spirits that stand on their own—clean, uncompromised, and honest by design.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div class="pillar bg-transparent px-8 py-10 md:py-14" data-keyword="Origin" role="article" aria-label="Respect for Origin">
+            <div class="pillar bg-transparent px-8 py-10 md:py-14" data-keyword="Origin" data-pillar-index="2" role="article" aria-label="Respect for Origin">
               <div class="flex items-start gap-6">
                 <div class="numeral text-[rgba(205,201,194,0.45)] text-xl font-serif leading-none">II</div>
                 <div class="w-full">
-                  <h3 class="pillar-title text-2xl lg:text-3xl font-heading font-semibold tracking-tight text-primary">
-                    Respect for <span class="keyword">Origin</span>
+                  <h3 class="pillar-title text-2xl lg:text-3xl font-heading font-semibold tracking-tight text-primary" data-i18n="pillar2Title">
+                    Respect for Origin
                   </h3>
                   <div class="divider mt-4 mb-6" aria-hidden="true"></div>
-                  <p class="pillar-body text-[rgba(205,201,194,0.9)] leading-[1.6] text-base lg:text-lg">
+                  <p class="pillar-body text-[rgba(205,201,194,0.9)] leading-[1.6] text-base lg:text-lg" data-i18n="pillar2Body">
                     We partner only with producers who respect the raw material, the process, and the end consumer. Our portfolio is defined by agave and terroir—not industrial adjustment—through transparent sourcing and additive-free production.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div class="pillar bg-transparent px-8 py-10 md:py-14" data-keyword="Distribution" role="article" aria-label="Disciplined Distribution">
+            <div class="pillar bg-transparent px-8 py-10 md:py-14" data-keyword="Distribution" data-pillar-index="3" role="article" aria-label="Disciplined Distribution">
               <div class="flex items-start gap-6">
                 <div class="numeral text-[rgba(205,201,194,0.45)] text-xl font-serif leading-none">III</div>
                 <div class="w-full">
-                  <h3 class="pillar-title text-2xl lg:text-3xl font-heading font-semibold tracking-tight text-primary">
-                    Disciplined <span class="keyword">Distribution</span>
+                  <h3 class="pillar-title text-2xl lg:text-3xl font-heading font-semibold tracking-tight text-primary" data-i18n="pillar3Title">
+                    Disciplined Distribution
                   </h3>
                   <div class="divider mt-4 mb-6" aria-hidden="true"></div>
-                  <p class="pillar-body text-[rgba(205,201,194,0.9)] leading-[1.6] text-base lg:text-lg">
+                  <p class="pillar-body text-[rgba(205,201,194,0.9)] leading-[1.6] text-base lg:text-lg" data-i18n="pillar3Body">
                     Our role is to translate integrity into professional European distribution. From compliance and documentation to market readiness, we apply the same rigor to distribution as we do to product selection—building long-term partnerships and sustainable category growth.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div class="pillar bg-transparent px-8 py-10 md:py-14" data-keyword="Technology" role="article" aria-label="Technology as Infrastructure">
+            <div class="pillar bg-transparent px-8 py-10 md:py-14" data-keyword="Technology" data-pillar-index="4" role="article" aria-label="Technology as Infrastructure">
               <div class="flex items-start gap-6">
                 <div class="numeral text-[rgba(205,201,194,0.45)] text-xl font-serif leading-none">IV</div>
                 <div class="w-full">
-                  <h3 class="pillar-title text-2xl lg:text-3xl font-heading font-semibold tracking-tight text-primary">
-                    <span class="keyword">Technology</span> as Infrastructure
+                  <h3 class="pillar-title text-2xl lg:text-3xl font-heading font-semibold tracking-tight text-primary" data-i18n="pillar4Title">
+                    Technology as Infrastructure
                   </h3>
                   <div class="divider mt-4 mb-6" aria-hidden="true"></div>
-                  <p class="pillar-body text-[rgba(205,201,194,0.9)] leading-[1.6] text-base lg:text-lg">
+                  <p class="pillar-body text-[rgba(205,201,194,0.9)] leading-[1.6] text-base lg:text-lg" data-i18n="pillar4Body">
                     We invest in technology not as a differentiator, but as infrastructure. Through system-level integrations, APIs, and data-driven tools, we remove friction from professional distribution while preserving product integrity. Technology, for us, enables disciplined growth without compromise.
                   </p>
                 </div>
@@ -698,51 +750,55 @@
       <section id="contact" class="py-28 px-8 lg:px-12 border-t border-border" style="background-color: #0b0c0a;">
         <div class="max-w-5xl mx-auto">
           <div class="mb-12 text-center">
-            <h2 class="text-4xl lg:text-5xl font-heading font-light mb-6">Partnership Inquiries</h2>
-            <p class="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto">
+            <h2 class="text-4xl lg:text-5xl font-heading font-light mb-6" data-i18n="contactTitle">Partnership Inquiries</h2>
+            <p class="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto" data-i18n="contactSubhead">
               For qualified retail or hospitality partnerships, please contact us to discuss access to our premium spirits portfolio.
             </p>
           </div>
           <form class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto" novalidate>
             <div class="space-y-6 md:col-span-2">
               <div class="space-y-2">
-                <label class="text-xs uppercase tracking-widest text-muted-foreground ml-1"
+                <label class="text-xs uppercase tracking-widest text-muted-foreground ml-1" data-i18n="contactName"
                   >Full Name</label
                 ><input
                   type="text"
                   class="w-full bg-input border-b border-border focus:border-primary text-foreground px-4 py-4 outline-none transition-colors rounded-none placeholder:text-muted-foreground/30 text-lg"
+                  data-i18n-placeholder="contactNamePlaceholder"
                   placeholder=" Don Patron"
                   required
                 />
               </div>
             </div>
             <div class="space-y-2">
-              <label class="text-xs uppercase tracking-widest text-muted-foreground ml-1"
+              <label class="text-xs uppercase tracking-widest text-muted-foreground ml-1" data-i18n="contactCompany"
                 >Company</label
               ><input
                 type="text"
                 class="w-full bg-input border-b border-border focus:border-primary text-foreground px-4 py-4 outline-none transition-colors rounded-none placeholder:text-muted-foreground/30 text-lg"
                 placeholder="Company Name"
+                data-i18n-placeholder="contactCompanyPlaceholder"
                 required
               />
             </div>
             <div class="space-y-2">
-              <label class="text-xs uppercase tracking-widest text-muted-foreground ml-1"
+              <label class="text-xs uppercase tracking-widest text-muted-foreground ml-1" data-i18n="contactEmail"
                 >Email Address</label
               ><input
                 type="email"
                 class="w-full bg-input border-b border-border focus:border-primary text-foreground px-4 py-4 outline-none transition-colors rounded-none placeholder:text-muted-foreground/30 text-lg"
                 placeholder="donpatron@gmail.com"
+                data-i18n-placeholder="contactEmailPlaceholder"
                 required
               />
             </div>
             <div class="space-y-2 md:col-span-2">
-              <label class="text-xs uppercase tracking-widest text-muted-foreground ml-1"
+              <label class="text-xs uppercase tracking-widest text-muted-foreground ml-1" data-i18n="contactInquiry"
                 >Inquiry</label
               >              <textarea
                 rows="6"
                 class="w-full bg-input border-b border-border focus:border-primary text-foreground px-4 py-4 outline-none transition-colors rounded-none resize-none placeholder:text-muted-foreground/30 text-lg"
                 placeholder="Tell us about your business needs..."
+                data-i18n-placeholder="contactInquiryPlaceholder"
                 required
               ></textarea>
             </div>
@@ -752,7 +808,7 @@
                 type="submit"
                 class="w-full bg-primary text-primary-foreground py-5 uppercase tracking-widest text-sm font-medium transition-colors mt-4"
               >
-                <span class="btn-label">Send Inquiry</span>
+                <span class="btn-label" data-i18n="contactSend">Send Inquiry</span>
               </button>
             </div>
           </form>
@@ -778,10 +834,10 @@
             ></a>
           </div>
           <div class="text-base text-muted-foreground/60 space-y-3">
-            <p>© 2024 Mecanova. All rights reserved.</p>
+            <p data-i18n="footerCopyright">© 2024 Mecanova. All rights reserved.</p>
             <div class="flex justify-center gap-6 text-sm">
-              <a href="privacy-policy.html" class="hover:text-primary transition-colors">Privacy Policy</a><span>|</span
-              ><a href="terms-of-service.html" class="hover:text-primary transition-colors">Terms of Service</a>
+              <a href="privacy-policy.html" class="hover:text-primary transition-colors" data-i18n="footerPrivacy">Privacy Policy</a><span>|</span
+              ><a href="terms-of-service.html" class="hover:text-primary transition-colors" data-i18n="footerTerms">Terms of Service</a>
             </div>
           </div>
         </div>
@@ -995,7 +1051,13 @@
           Array.from(form.elements).forEach((el) => {
             if (typeof el.disabled !== 'undefined') el.disabled = true;
           });
-          sendBtn.textContent = 'Inquiry Sent';
+          const sentText = window.translations && window.i18n ? window.translations[window.i18n.currentLang]?.contactSent : 'Inquiry Sent';
+          const btnLabel = sendBtn.querySelector('.btn-label');
+          if (btnLabel) {
+            btnLabel.textContent = sentText;
+          } else {
+            sendBtn.textContent = sentText;
+          }
           sendBtn.classList.add('sent');
           sendBtn.disabled = true;
           // keep the button visible in the section
